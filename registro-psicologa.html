@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postulación Profesional - El Club</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clubVerde: '#084739',
+                        clubVerdeMedio: '#0f5445',
+                        clubCrema: '#eadac8',
+                        clubOscuro: '#1a1a1a',
+                        clubFondoCard: '#121212'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubOscuro text-white min-h-screen antialiased selection:bg-clubCrema selection:text-clubVerde">
+
+    <header class="bg-clubVerde py-4 px-6 md:px-12 flex justify-between items-center shadow-lg sticky top-0 z-50">
+        <a href="index.html" class="text-xs font-semibold uppercase tracking-wider text-clubCrema hover:underline flex items-center gap-2">
+            <span>←</span> Volver al inicio
+        </a>
+        <div class="text-2xl font-serif font-bold tracking-wide text-clubCrema">El Club</div>
+        <a href="login-psicologa.html" class="border border-clubCrema text-clubCrema rounded-full px-5 py-2 text-xs font-semibold hover:bg-clubCrema hover:text-clubVerde transition-all">
+            Ya tengo cuenta
+        </a>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 md:px-8 py-10 space-y-8">
+        <section class="border-b border-white/5 pb-8">
+            <p class="text-xs font-bold uppercase tracking-[0.25em] text-clubCrema/70 mb-4">Onboarding profesional</p>
+            <h1 class="text-3xl md:text-5xl font-serif font-semibold tracking-wide text-clubCrema">Postula como psicóloga en El Club.</h1>
+            <p class="text-sm md:text-base text-gray-300 leading-relaxed mt-4 max-w-3xl">
+                Este registro es más completo porque tu perfil pasará por revisión antes de aparecer disponible para pacientes.
+            </p>
+        </section>
+
+        <form id="form-psicologa" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <section class="lg:col-span-7 bg-clubFondoCard border border-white/5 rounded-2xl p-6 md:p-8 space-y-5">
+                <h2 class="text-lg font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Datos personales y cuenta</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Nombre</label>
+                        <input name="firstName" required type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Apellido</label>
+                        <input name="lastName" required type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Correo profesional</label>
+                        <input name="email" required type="email" placeholder="tu@correo.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Contraseña</label>
+                        <input name="password" required type="password" minlength="8" placeholder="Mínimo 8 caracteres" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Celular</label>
+                        <input name="phone" required type="tel" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Ciudad / país</label>
+                        <input name="city" required type="text" placeholder="Bogotá, Colombia" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                </div>
+            </section>
+
+            <aside class="lg:col-span-5 bg-clubVerde border border-white/10 rounded-2xl p-6 md:p-8 space-y-5 h-fit lg:sticky lg:top-24">
+                <h2 class="text-lg font-serif font-semibold tracking-wide text-clubCrema border-b border-white/10 pb-3">Estado de revisión</h2>
+                <div class="space-y-3 text-sm text-gray-200 leading-relaxed">
+                    <p>Al enviar tu postulación, tu cuenta quedará creada como psicóloga, pero tu perfil público no aparecerá hasta ser aprobado.</p>
+                    <p class="text-clubCrema font-semibold">Estado inicial: pendiente de revisión.</p>
+                </div>
+            </aside>
+
+            <section class="lg:col-span-7 bg-clubFondoCard border border-white/5 rounded-2xl p-6 md:p-8 space-y-5">
+                <h2 class="text-lg font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Formación y verificación</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Título profesional</label>
+                        <input name="degree" required type="text" placeholder="Psicóloga clínica" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Matrícula / tarjeta profesional</label>
+                        <input name="license" required type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Universidad</label>
+                        <input name="university" required type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Años de experiencia</label>
+                        <input name="experienceYears" required type="number" min="0" max="60" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                </div>
+            </section>
+
+            <section class="lg:col-span-5 bg-clubFondoCard border border-white/5 rounded-2xl p-6 md:p-8 space-y-5">
+                <h2 class="text-lg font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Perfil público</h2>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Especialidad principal</label>
+                    <input name="specialty" required type="text" placeholder="Ansiedad, terapia de pareja..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Enfoques o áreas</label>
+                    <input name="areas" required type="text" placeholder="Ansiedad, TCC, autoestima" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Tarifa sugerida por sesión COP</label>
+                    <input name="price" required type="number" min="0" step="1000" value="80000" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema">
+                </div>
+            </section>
+
+            <section class="lg:col-span-12 bg-clubFondoCard border border-white/5 rounded-2xl p-6 md:p-8 space-y-5">
+                <h2 class="text-lg font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Presentación profesional</h2>
+                <textarea name="bio" required minlength="80" rows="5" placeholder="Cuéntales a los pacientes sobre tu enfoque, experiencia y forma de acompañamiento." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema"></textarea>
+
+                <label class="flex items-start gap-3 text-xs text-gray-300 leading-relaxed">
+                    <input required type="checkbox" class="mt-1 accent-clubCrema">
+                    Confirmo que la información enviada es real y acepto que El Club revise mi perfil antes de mostrarlo públicamente.
+                </label>
+
+                <button type="submit" class="w-full md:w-auto bg-clubCrema text-clubVerde font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-white transition-all text-sm tracking-wide">
+                    Enviar postulación profesional
+                </button>
+            </section>
+        </form>
+    </main>
+
+    <footer class="bg-clubFondoCard border-t border-white/5 py-8 text-center text-[11px] text-gray-500 font-semibold tracking-wide mt-12">
+        © 2026 El Club by Mile Moya · Red profesional verificada.
+    </footer>
+
+    <script type="module">
+        import { auth, db, createUserWithEmailAndPassword, doc, setDoc } from "./firebase-config.js";
+
+        const form = document.getElementById("form-psicologa");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const submitButton = form.querySelector('button[type="submit"]');
+            const data = Object.fromEntries(new FormData(form).entries());
+
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = "Enviando postulación...";
+
+                const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+                const user = userCredential.user;
+                const areas = data.areas.split(",").map(item => item.trim()).filter(Boolean);
+
+                await setDoc(doc(db, "users", user.uid), {
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    email: data.email,
+                    phone: data.phone,
+                    city: data.city,
+                    role: "psicologa",
+                    rol: "psicologa",
+                    degree: data.degree,
+                    license: data.license,
+                    university: data.university,
+                    experienceYears: Number(data.experienceYears || 0),
+                    experience: `${Number(data.experienceYears || 0)} años de experiencia`,
+                    specialty: data.specialty,
+                    profession: data.degree,
+                    areas,
+                    price: Number(data.price || 80000),
+                    bio: data.bio,
+                    available: false,
+                    applicationStatus: "pending",
+                    verificationStatus: "pending",
+                    createdAt: new Date().toISOString()
+                });
+
+                alert("Tu postulación fue enviada. Tu perfil queda pendiente de revisión antes de aparecer en el catálogo.");
+                window.location.href = "dashboard-psicologa.html";
+            } catch (error) {
+                console.error("Error en postulación profesional:", error);
+                alert("No pudimos enviar la postulación: " + error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Enviar postulación profesional";
+            }
+        });
+    </script>
+</body>
+</html>

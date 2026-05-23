@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Admin - El Club</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clubVerde: '#084739',
+                        clubVerdeMedio: '#0f5445',
+                        clubCrema: '#eadac8',
+                        clubOscuro: '#1a1a1a',
+                        clubFondoCard: '#121212'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubOscuro text-white min-h-screen flex flex-col antialiased selection:bg-clubCrema selection:text-clubVerde">
+
+    <header class="bg-clubVerde py-4 px-6 md:px-12 flex justify-between items-center shadow-lg">
+        <a href="index.html" class="text-xs font-semibold uppercase tracking-wider text-clubCrema hover:underline flex items-center gap-2">
+            <span>←</span> Volver al inicio
+        </a>
+        <div class="text-2xl font-serif font-bold tracking-wide text-clubCrema">El Club</div>
+        <a href="auth.html" class="border border-clubCrema text-clubCrema rounded-full px-5 py-2 text-xs font-semibold hover:bg-clubCrema hover:text-clubVerde transition-all">
+            Acceso usuarios
+        </a>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md bg-clubFondoCard rounded-2xl shadow-2xl border border-white/5 overflow-hidden">
+            <div class="bg-clubVerde py-6 px-8 border-b border-white/10">
+                <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-clubCrema/70 mb-3">Consola central</p>
+                <h1 class="text-2xl font-serif text-clubCrema font-semibold tracking-wide">Acceso administrativo</h1>
+                <p class="text-xs text-gray-300 mt-2 leading-relaxed">Gestiona solicitudes, usuarios, reservas, transacciones y métricas de la plataforma.</p>
+            </div>
+
+            <form id="form-login-admin" class="p-8 space-y-5">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Correo admin</label>
+                    <input name="email" type="email" required placeholder="admin@elclub.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema">Contraseña</label>
+                        <button type="button" id="btn-reset-password" class="text-xs text-gray-400 hover:text-clubCrema transition-colors">Recuperar</button>
+                    </div>
+                    <input name="password" type="password" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
+                </div>
+
+                <button type="submit" class="w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl shadow-lg hover:bg-white transition-all text-sm tracking-wide">
+                    Entrar a la consola admin
+                </button>
+
+                <div class="bg-white/5 border border-white/10 rounded-xl p-4 text-xs text-gray-300 leading-relaxed">
+                    Este acceso es exclusivo para cuentas con rol de administración en Firebase.
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="bg-clubFondoCard border-t border-white/5 py-6 text-center text-[11px] text-gray-500 font-semibold tracking-wide">
+        © 2026 El Club by Mile Moya · Administración de plataforma.
+    </footer>
+
+    <script type="module">
+        import {
+            auth,
+            signInWithEmailAndPassword,
+            signOut,
+            sendPasswordResetEmail,
+            getUserProfile
+        } from "./firebase-config.js";
+
+        const form = document.getElementById("form-login-admin");
+        const resetButton = document.getElementById("btn-reset-password");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const submitButton = form.querySelector('button[type="submit"]');
+            const email = form.email.value.trim();
+            const password = form.password.value;
+
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = "Validando permisos...";
+
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const profile = await getUserProfile(userCredential.user);
+
+                if (!profile || profile.role !== "admin") {
+                    await signOut(auth);
+                    alert("Este acceso es solo para administración. Tu cuenta no tiene permisos admin.");
+                    window.location.href = "auth.html";
+                    return;
+                }
+
+                window.location.href = "admin.html";
+            } catch (error) {
+                console.error("Error en acceso admin:", error);
+                alert("No pudimos iniciar sesión. Revisa tus credenciales e intenta de nuevo.");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Entrar a la consola admin";
+            }
+        });
+
+        resetButton.addEventListener("click", async () => {
+            const email = form.email.value.trim();
+            if (!email) {
+                alert("Escribe el correo admin para enviarte la recuperación.");
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("Te enviamos un correo para restablecer tu contraseña.");
+            } catch (error) {
+                console.error("Error al enviar recuperación:", error);
+                alert("No pudimos enviar el correo. Revisa el email e intenta de nuevo.");
+            }
+        });
+    </script>
+</body>
+</html>
