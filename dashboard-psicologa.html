@@ -16,11 +16,11 @@
             theme: {
                 extend: {
                     colors: {
-                        clubVerde: '#084739',       /* Fondo Sidebar fijo */
-                        clubVerdeMedio: '#0f5445',  /* Destacados activos */
-                        clubCrema: '#eadac8',       /* Detalles y textos premium */
-                        clubOscuro: '#1a1a1a',      /* Fondo del panel de contenido */
-                        clubFondo: '#121212'        /* Contenedores de tarjetas secundarias */
+                        clubVerde: '#084739',       
+                        clubVerdeMedio: '#0f5445',  
+                        clubCrema: '#eadac8',       
+                        clubOscuro: '#1a1a1a',      
+                        clubFondo: '#121212'        
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -44,7 +44,7 @@
                 El Club
             </div>
             
-            <!-- Perfil Profesional con Foto Modificable Real -->
+            <!-- Perfil Profesional -->
             <div class="bg-clubVerdeMedio rounded-xl p-4 flex items-center gap-3 border border-white/10 mb-8 relative group">
                 <div class="relative w-12 h-12 shrink-0">
                     <img id="psychologist-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=150&auto=format&fit=crop" alt="Foto de perfil" class="w-full h-full object-cover rounded-full border border-clubCrema/40">
@@ -59,7 +59,7 @@
                 </div>
             </div>
 
-            <!-- Navegación Dinámica por Tabs -->
+            <!-- Navegación por Tabs -->
             <nav id="sidebar-nav" class="space-y-1.5 text-sm font-medium">
                 <button data-tab="tab-inicio" class="w-full flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl transition-all shadow-md tab-btn">
                     <span>🏠</span> Inicio
@@ -96,6 +96,7 @@
             </button>
         </header>
 
+        <!-- BANNER DE REVISIÓN (CÓDIGO ORIGINAL RECUPERADO) -->
         <section id="professional-status-banner" class="hidden bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5">
             <p class="text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-2">Perfil en revisión</p>
             <h2 class="text-lg font-serif font-semibold text-clubCrema">Tu postulación profesional está pendiente de aprobación.</h2>
@@ -124,6 +125,7 @@
             </section>
 
             <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Citas de hoy -->
                 <div class="lg:col-span-7 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
                     <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Citas de hoy</h3>
                     <div id="psychologist-appointments" class="space-y-3">
@@ -131,6 +133,7 @@
                     </div>
                 </div>
 
+                <!-- Pacientes Recientes -->
                 <div class="lg:col-span-5 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
                     <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Pacientes recientes</h3>
                     <div id="recent-patients" class="divide-y divide-white/5">
@@ -149,7 +152,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Google Meet Card -->
                     <div class="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col justify-between">
                         <div>
                             <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -163,7 +165,6 @@
                         </div>
                     </div>
 
-                    <!-- Google Calendar Card -->
                     <div class="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col justify-between">
                         <div>
                             <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -182,7 +183,7 @@
                 <div class="border-t border-white/5 pt-6 space-y-4">
                     <div>
                         <h3 class="text-base font-serif font-semibold text-clubCrema">Configuración Horaria de Sesiones</h3>
-                        <p class="text-xs text-gray-400">Las sesiones se calculan estrictamente sobre bloques fijos de 60 minutos con un mínimo obligatorio de 15 minutos de descanso.</p>
+                        <p class="text-xs text-gray-400">Las sesiones se calculan estrictamente sobre bloques fijos de 60 minutos con un mínimo de 15 minutos de descanso.</p>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
@@ -200,12 +201,9 @@
                         </div>
                     </div>
 
-                    <!-- Configuración de Jornadas Disponibles Reales -->
                     <form id="form-availability" class="space-y-3">
                         <label class="text-xs font-bold uppercase tracking-wider text-gray-400 block">Días y Ventanas Horarias Disponibles</label>
-                        <div id="schedule-selector-container" class="space-y-2">
-                            <!-- JS inyectará los días de lunes a viernes aquí mapeados con los datos reales de la base de datos -->
-                        </div>
+                        <div id="schedule-selector-container" class="space-y-2"></div>
                         <div class="pt-2 flex justify-end">
                             <button type="submit" class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-white transition-all">
                                 Guardar Configuración de Agenda
@@ -220,7 +218,7 @@
         <div id="tab-pacientes" class="tab-content space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
-                <!-- Lista de Pacientes Extraídos Automáticamente de las Citas -->
+                <!-- Lista de Pacientes Extraídos de Citas -->
                 <div class="lg:col-span-4 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-4">
                     <h3 class="text-base font-serif font-semibold text-clubCrema border-b border-white/5 pb-2">Pacientes Activos</h3>
                     <div id="active-patients-list" class="space-y-2 max-h-[500px] overflow-y-auto">
@@ -228,7 +226,7 @@
                     </div>
                 </div>
 
-                <!-- Expediente Clínico y Recursos del Paciente Seleccionado -->
+                <!-- Expediente Clínico y Recursos Compartidos -->
                 <div id="patient-folder-container" class="hidden lg:col-span-8 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-6">
                     <div class="flex flex-wrap justify-between items-start border-b border-white/5 pb-4 gap-2">
                         <div>
@@ -238,7 +236,7 @@
                         <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full uppercase tracking-wider font-bold">En Tratamiento</span>
                     </div>
 
-                    <!-- Historia Clínica Completa -->
+                    <!-- Historia Clínica -->
                     <div class="space-y-3">
                         <label class="text-xs font-bold uppercase tracking-wider text-clubCrema block">Evolución e Historia Clínica</label>
                         <textarea id="clinical-history-text" rows="5" class="w-full bg-clubOscuro border border-white/10 rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-clubCrema/40 leading-relaxed" placeholder="Escribe aquí las observaciones clínicas de las sesiones..."></textarea>
@@ -247,11 +245,11 @@
                         </div>
                     </div>
 
-                    <!-- Compartir Recursos Didácticos o Tareas -->
+                    <!-- Recursos Didácticos -->
                     <div class="border-t border-white/5 pt-5 space-y-4">
                         <div>
                             <h4 class="text-sm font-bold text-white">Recursos y Ejercicios Compartidos</h4>
-                            <p class="text-xs text-gray-400">Sube guías o lecturas recomendadas exclusivas para este paciente.</p>
+                            <p class="text-xs text-gray-400">Sube guías, PDFs o imágenes exclusivas para este paciente.</p>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -262,7 +260,6 @@
                                 <input type="file" id="upload-resource" class="absolute inset-0 opacity-0 cursor-pointer">
                             </div>
 
-                            <!-- Listado de Archivos Real del Paciente -->
                             <div id="patient-resources-list" class="space-y-2 max-h-[150px] overflow-y-auto">
                                 <p class="text-gray-500 text-xs italic">No hay archivos compartidos todavía.</p>
                             </div>
@@ -280,7 +277,7 @@
         <div id="tab-chat" class="tab-content space-y-6">
             <div class="bg-clubFondo border border-white/5 rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 h-[550px]">
                 
-                <!-- Lista de Canales Abiertos -->
+                <!-- Canales Abiertos -->
                 <div class="md:col-span-4 border-r border-white/5 flex flex-col bg-black/10">
                     <div class="p-4 border-b border-white/5">
                         <h3 class="text-sm font-serif font-semibold text-clubCrema">Mensajes Directos</h3>
@@ -290,7 +287,7 @@
                     </div>
                 </div>
 
-                <!-- Ventana Activa del Chat -->
+                <!-- Ventana Activa Chat -->
                 <div id="chat-window-container" class="hidden md:col-span-8 flex flex-col justify-between bg-white/[0.01]">
                     <div class="p-4 border-b border-white/5 flex items-center justify-between bg-black/20">
                         <div>
@@ -299,12 +296,8 @@
                         </div>
                     </div>
 
-                    <!-- Cuerpo de Mensajes Real -->
-                    <div id="chat-messages-body" class="flex-grow p-4 overflow-y-auto space-y-4 text-xs flex flex-col">
-                        <!-- Render Dinámico -->
-                    </div>
+                    <div id="chat-messages-body" class="flex-grow p-4 overflow-y-auto space-y-4 text-xs flex flex-col"></div>
 
-                    <!-- Input de Escritura -->
                     <form id="form-chat-send" class="p-3 border-t border-white/5 bg-black/20 flex gap-2">
                         <input type="text" id="chat-input-message" autocomplete="off" placeholder="Escribe un mensaje de apoyo clínico..." class="flex-grow bg-clubOscuro border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-clubCrema/30">
                         <button type="submit" class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-5 rounded-xl hover:bg-white transition-all">
@@ -314,67 +307,73 @@
                 </div>
                 
                 <div id="chat-window-placeholder" class="md:col-span-8 flex items-center justify-center text-center text-gray-500 italic text-sm">
-                    Selecciona una conversación activa de la lista izquierda para abrir el canal de mensajes.
+                    Selecciona una conversación de la lista de pacientes o del menú lateral para chatear.
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- LOGICA FRONTEND CONTROLADORES GLOBAL -->
+    <!-- NAVEGACIÓN GLOBAL DE INTERCAMBIO DE TABS -->
     <script>
-        // Sistema global de intercambio de tabs sin refrescar la vista
         const tabButtons = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
 
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                tabButtons.forEach(b => {
+        function switchTab(tabId) {
+            tabButtons.forEach(b => {
+                if(b.getAttribute('data-tab') === tabId) {
+                    b.classList.add('bg-clubCrema', 'text-clubVerde', 'shadow-md');
+                    b.classList.remove('text-clubCrema', 'hover:bg-white/5');
+                } else {
                     b.classList.remove('bg-clubCrema', 'text-clubVerde', 'shadow-md');
                     b.classList.add('text-clubCrema', 'hover:bg-white/5');
-                });
-                tabContents.forEach(content => content.classList.remove('active'));
+                }
+            });
+            tabContents.forEach(content => {
+                if(content.id === tabId) content.classList.add('active');
+                else content.classList.remove('active');
+            });
+        }
 
-                btn.classList.add('bg-clubCrema', 'text-clubVerde', 'shadow-md');
-                btn.classList.remove('text-clubCrema', 'hover:bg-white/5');
-                
-                const tabId = btn.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchTab(btn.getAttribute('data-tab'));
             });
         });
     </script>
 
-    <!-- INYECCIÓN COMPLETA DE LÓGICA FIREBASE -->
+    <!-- PROCESAMIENTO E INTEGRACIÓN CON FIRESTORE -->
     <script type="module">
     import { 
         checkAuth, auth, signOut, db, collection, query, where, onSnapshot, doc, getDoc, updateDoc, setDoc, addDoc, serverTimestamp 
     } from "./firebase-config.js";
 
-    // Nota de infraestructura: Si tu proyecto usa Firebase Storage importas 'getStorage', si guardas URLs string base64 usas Firestore.
-    // Para simplificar la arquitectura sin dependencias pesadas de librerías de storage externas, manejamos almacenamiento directo estructurado.
-
     checkAuth("psicologa");
 
     const money = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
     
-    // Variables de estado local persistente en sesión
     let currentPsychologistId = null;
     let selectedPatientId = null;
     let unsubscribeChatMessages = null;
     let globalActivePatientsMap = new Map();
 
-    // Días de la semana por defecto para construir la configuración horaria
     const DAYS_OF_WEEK = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
 
-    // Formateador de fecha superior fija
+    // Formatear Fecha Superior Fija
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', options).toUpperCase();
+
+    // Obtener los datos del psicólogo/usuario de manera segura
+    async function getUserProfile(user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        return userDoc.exists() ? userDoc.data() : null;
+    }
 
     auth.onAuthStateChanged(async (user) => {
         if (!user) return;
         currentPsychologistId = user.uid;
 
-        // 1. Obtener perfil e Inicializar Avatar
+        // 1. Carga de Perfil Original y Verificación de Banner de Estado
         const profile = await getUserProfile(user);
         const displayName = profile ? `${profile.firstName || ""} ${profile.lastName || ""}`.trim() : "";
         const firstName = (profile?.firstName || displayName || "Doctora").split(" ")[0];
@@ -386,10 +385,11 @@
             document.getElementById('psychologist-img').src = profile.photoURL;
         }
 
+        // LÓGICA DE CONTROL DEL BANNER RECUPERADA AL 100%
         const isPending = profile?.applicationStatus === "pending" || profile?.verificationStatus === "pending" || profile?.available === false;
         document.getElementById('professional-status-banner').classList.toggle('hidden', !isPending);
 
-        // Inicializar enlace de Google Meet guardado
+        // Estado inicial enlace Google Meet
         const meetStatusEl = document.getElementById('meet-status');
         if (profile?.googleMeetLink) {
             meetStatusEl.innerText = "● Conectado: " + profile.googleMeetLink;
@@ -399,54 +399,62 @@
             meetStatusEl.className = "text-xs text-gray-400 font-medium";
         }
 
-        // 2. Renderizar formulario de disponibilidad horaria
         renderAvailabilityForm(profile?.availability || {});
 
-        // 3. Listener en Tiempo Real de Citas (Código Original Recuperado y Fortalecido)
+        // 2. ESCUCHA EN TIEMPO REAL DE CITAS (FILTRADOS Y CONTADORES ORIGINALES)
         const qAppointments = query(collection(db, "appointments"), where("psychologistId", "==", user.uid));
         const agendaContainer = document.getElementById('psychologist-appointments');
         const patientsContainer = document.getElementById('recent-patients');
 
         onSnapshot(qAppointments, (snapshot) => {
             const appointments = [];
+            const todayStr = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD para matching preciso
+
             snapshot.forEach((doc) => appointments.push({ id: doc.id, ...doc.data() }));
+            
+            // Ordenamiento cronológico natural
             appointments.sort((a, b) => `${a.date || ""} ${a.time || ""}`.localeCompare(`${b.date || ""} ${b.time || ""}`));
 
-            // Extraemos los IDs únicos de pacientes que agendaron con la psicóloga
+            // Filtrados exactos del código anterior
+            const todayAppointments = appointments.filter(item => item.date === todayStr && item.status !== "cancelada");
             const patientIds = new Set(appointments.map(item => item.patientId).filter(Boolean));
             const totalIncome = appointments.reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-            // Actualizar contadores superiores heredados
-            document.getElementById('today-count').innerText = appointments.filter(item => item.status !== "cancelada").length;
+            // Inyección en contadores superiores
+            document.getElementById('today-count').innerText = todayAppointments.length;
             document.getElementById('active-patients-count').innerText = patientIds.size;
             document.getElementById('month-income').innerHTML = `${money.format(totalIncome)} <span class="text-[10px] text-gray-500 font-sans font-normal">COP</span>`;
 
             if (!appointments.length) {
-                agendaContainer.innerHTML = '<p class="text-gray-500 text-sm">Aún no tienes citas confirmadas.</p>';
-                patientsContainer.innerHTML = '<p class="text-gray-500 text-sm">Los pacientes aparecerán cuando reserven.</p>';
-                buildActivePatientsLists([]); // Lista vacía
+                agendaContainer.innerHTML = '<p class="text-gray-500 text-sm italic">Aún no tienes citas confirmadas hoy.</p>';
+                patientsContainer.innerHTML = '<p class="text-gray-500 text-sm italic">Los pacientes aparecerán cuando reserven.</p>';
+                buildActivePatientsLists([]);
                 return;
             }
 
-            // Renderizar citas en el tablero de Inicio
-            agendaContainer.innerHTML = appointments.map((item) => `
-                <div class="flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-xl hover:border-white/10 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <span class="text-xs font-mono font-bold text-clubCrema bg-clubVerde px-2.5 py-1.5 rounded-md">${item.time || "--:--"}</span>
-                        <div>
-                            <h5 class="text-sm font-semibold">${item.patientName || item.patientEmail || "Paciente"}</h5>
-                            <p class="text-[11px] text-gray-400">${item.date || "Fecha por confirmar"} · ${item.modality || "Videollamada"}</p>
+            // Renderizado exacto de Citas de Hoy
+            if(todayAppointments.length === 0) {
+                agendaContainer.innerHTML = '<p class="text-gray-500 text-sm italic">No tienes consultas programadas para el día de hoy.</p>';
+            } else {
+                agendaContainer.innerHTML = todayAppointments.map((item) => `
+                    <div class="flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-xl hover:border-white/10 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-mono font-bold text-clubCrema bg-clubVerde px-2.5 py-1.5 rounded-md">${item.time || "--:--"}</span>
+                            <div>
+                                <h5 class="text-sm font-semibold">${item.patientName || item.patientEmail || "Paciente"}</h5>
+                                <p class="text-[11px] text-gray-400">${item.modality || "Videollamada"}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            ${item.googleMeetLink || profile?.googleMeetLink ? 
+                              `<a href="${item.googleMeetLink || profile?.googleMeetLink}" target="_blank" class="text-[10px] bg-clubVerdeMedio px-3 py-1.5 rounded text-clubCrema font-bold hover:bg-white/20 transition-all">UNIRSE</a>` : ''}
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.status || "confirmada"}</span>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        ${item.googleMeetLink || profile?.googleMeetLink ? 
-                          `<a href="${item.googleMeetLink || profile?.googleMeetLink}" target="_blank" class="text-[10px] bg-clubVerdeMedio px-2 py-1 rounded text-clubCrema font-bold hover:bg-white/10">MEET</a>` : ''}
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.status || "confirmada"}</span>
-                    </div>
-                </div>
-            `).filter((_, index) => index < 5).join(""); // Mostrar las 5 primeras
+                `).join("");
+            }
 
-            // Construir lista única de pacientes emparejados para inyectar en vistas
+            // Construcción del mapeo único de pacientes agendados
             const unifiedPatients = [];
             globalActivePatientsMap.clear();
 
@@ -463,26 +471,26 @@
                 globalActivePatientsMap.set(id, cleanPatient);
             });
 
-            // Inyectar en sección de pacientes recientes de la home
+            // Listado lateral de Recientes en Inicio
             patientsContainer.innerHTML = unifiedPatients.map((p) => `
                 <div class="flex justify-between items-center py-3.5 first:pt-0 last:pb-0">
                     <div class="flex items-center gap-3">
                         <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
                         <div>
                             <h5 class="text-sm font-medium">${p.name}</h5>
-                            <p class="text-[10px] text-gray-500 font-mono">${p.sessionCount} sesiones registradas</p>
+                            <p class="text-[10px] text-gray-500 font-mono">${p.sessionCount} sesiones en total</p>
                         </div>
                     </div>
                     <span class="text-xs text-clubCrema font-semibold">Activo</span>
                 </div>
             `).slice(0, 5).join("");
 
-            // Construir la sección de "Mis Pacientes Activos" de la pestaña secundaria y canales de chat
+            // Sincronizar listas en las pestañas secundarias
             buildActivePatientsLists(unifiedPatients);
         });
     });
 
-    // ================= LÓGICA DE FOTO DE PERFIL REAL =================
+    // Cambiar foto de perfil en Base64
     document.getElementById('upload-avatar').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file || !currentPsychologistId) return;
@@ -490,43 +498,35 @@
         const reader = new FileReader();
         reader.onload = async (event) => {
             const base64String = event.target.result;
-            // Guardamos el string base64 en Firestore directamente en el documento del perfil
             try {
-                await updateDoc(doc(db, "users", currentPsychologistId), {
-                    photoURL: base64String
-                });
+                await updateDoc(doc(db, "users", currentPsychologistId), { photoURL: base64String });
                 document.getElementById('psychologist-img').src = base64String;
-                alert("Foto de perfil actualizada exitosamente.");
+                alert("Foto de perfil actualizada.");
             } catch (err) {
-                console.error("Error guardando imagen:", err);
+                console.error(err);
             }
         };
         reader.readAsDataURL(file);
     });
 
-    // ================= LÓGICA DE INTEGRACIÓN DE LINK DE MEET =================
+    // Enlace de Google Meet
     document.getElementById('btn-connect-meet').addEventListener('click', async () => {
-        const currentLink = prompt("Introduce tu enlace personal permanente de Google Meet para sesiones:");
-        if (currentLink === null) return; // Cancelado
-        
-        if (currentLink.trim() === "" || !currentLink.includes("meet.google.com")) {
-            alert("Por favor introduce un enlace válido de Google Meet.");
+        const currentLink = prompt("Introduce tu enlace permanente de Google Meet:");
+        if (!currentLink) return;
+        if (!currentLink.includes("meet.google.com")) {
+            alert("Enlace no válido.");
             return;
         }
-
         try {
-            await updateDoc(doc(db, "users", currentPsychologistId), {
-                googleMeetLink: currentLink.trim()
-            });
+            await updateDoc(doc(db, "users", currentPsychologistId), { googleMeetLink: currentLink.trim() });
             document.getElementById('meet-status').innerText = "● Conectado: " + currentLink.trim();
             document.getElementById('meet-status').className = "text-xs text-emerald-400 font-medium truncate max-w-[180px]";
-            alert("Cuenta de Google Meet asociada correctamente.");
         } catch (err) {
             console.error(err);
         }
     });
 
-    // ================= LÓGICA DE AGENDA / HORARIOS DISPONIBLES =================
+    // Formularios de Horarios
     function renderAvailabilityForm(savedAvailability) {
         const container = document.getElementById('schedule-selector-container');
         container.innerHTML = DAYS_OF_WEEK.map(day => {
@@ -553,8 +553,6 @@
 
     document.getElementById('form-availability').addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (!currentPsychologistId) return;
-
         const updatedAvailability = {};
         DAYS_OF_WEEK.forEach(day => {
             updatedAvailability[day] = {
@@ -565,63 +563,61 @@
                 end2: document.getElementById(`end2-${day}`).value,
             };
         });
-
         try {
-            await updateDoc(doc(db, "users", currentPsychologistId), {
-                availability: updatedAvailability
-            });
-            alert("¡Agenda guardada con éxito! Se respetarán tus consultas de 60 min con 15 min de descanso.");
+            await updateDoc(doc(db, "users", currentPsychologistId), { availability: updatedAvailability });
+            alert("Configuración horaria guardada.");
         } catch (err) {
-            alert("Error al guardar configuración.");
+            console.error(err);
         }
     });
 
-    // ================= LISTAS REALES DE PACIENTES ACTIVOS =================
+    // ================= CONSTRUCCIÓN SIMULTÁNEA DE LISTAS REALES =================
     function buildActivePatientsLists(patientsArray) {
         const listContainer = document.getElementById('active-patients-list');
         const chatChannelsList = document.getElementById('chat-channels-list');
 
         if (!patientsArray.length) {
-            listContainer.innerHTML = '<p class="text-gray-500 text-xs italic">No registras pacientes vinculados por citas.</p>';
-            chatChannelsList.innerHTML = '<p class="text-gray-500 text-xs italic p-4">No hay conversaciones disponibles.</p>';
+            listContainer.innerHTML = '<p class="text-gray-500 text-xs italic">No hay pacientes activos por citas agendadas.</p>';
+            chatChannelsList.innerHTML = '<p class="text-gray-500 text-xs italic p-4">No hay canales de chat activos.</p>';
             return;
         }
 
-        // Render en pestaña de expedientes clínicos
+        // Render en Expedientes Clínicos
         listContainer.innerHTML = patientsArray.map(p => `
             <button class="w-full text-left p-3 rounded-xl flex items-center gap-3 transition-all border ${selectedPatientId === p.id ? 'bg-clubVerdeMedio/30 border-clubCrema/20' : 'bg-white/5 border-white/5 hover:bg-white/10'}" data-patient-btn="${p.id}">
                 <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
                 <div class="overflow-hidden">
                     <h4 class="text-sm font-bold text-white truncate">${p.name}</h4>
-                    <p class="text-[11px] text-gray-400 font-mono">Sesiones: ${p.sessionCount}</p>
+                    <p class="text-[11px] text-gray-400 font-mono">Sesiones totales: ${p.sessionCount}</p>
                 </div>
             </button>
         `).join("");
 
-        // Render en pestaña de centro de mensajes directos
+        // Render en Centro de Mensajes
         chatChannelsList.innerHTML = patientsArray.map(p => `
-            <button class="w-full text-left p-4 hover:bg-white/5 flex items-center gap-3 transition-colors border-b border-white/5" data-chat-btn="${p.id}">
+            <button class="w-full text-left p-4 hover:bg-white/5 flex items-center gap-3 transition-colors border-b border-white/5 ${selectedPatientId === p.id ? 'bg-white/5' : ''}" data-chat-btn="${p.id}">
                 <div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
                 <div class="overflow-hidden w-full">
-                    <div class="flex justify-between items-baseline">
-                        <span class="text-xs font-bold text-white truncate">${p.name}</span>
-                    </div>
-                    <p class="text-xs text-gray-400 truncate mt-0.5">Haga clic para abrir conversación clínica...</p>
+                    <span class="text-xs font-bold text-white truncate block">${p.name}</span>
+                    <p class="text-[11px] text-gray-400 truncate mt-0.5">Abrir chat clínico en tiempo real...</p>
                 </div>
             </button>
         `).join("");
 
-        // Agregar listeners dinámicos de selección de expediente
+        // Vinculación unificada sin errores de referencia cruzada
         patientsArray.forEach(p => {
-            const btn = document.querySelector(`[data-patient-btn="${p.id}"]`);
-            if (btn) btn.addEventListener('click', () => loadPatientFolder(p.id));
+            document.querySelector(`[data-patient-btn="${p.id}"]`)?.addEventListener('click', () => {
+                loadPatientFolder(p.id);
+            });
 
-            const chatBtn = document.querySelector(`[data-chat-btn="${p.id}"]`);
-            if (chatBtn) chatBtn.addEventListener('click', () => openChatWindow(p.id));
+            document.querySelector(`[data-chat-btn="${p.id}"]`)?.addEventListener('click', () => {
+                switchTab('tab-chat');
+                openChatWindow(p.id);
+            });
         });
     }
 
-    // ================= LÓGICA DE EXPEDIENTES: HISTORIAL CLÍNICO Y RECURSOS =================
+    // ================= CARGA DE EXPEDIENTE CLÍNICO COMPLETO =================
     async function loadPatientFolder(patientId) {
         selectedPatientId = patientId;
         const patientData = globalActivePatientsMap.get(patientId);
@@ -632,27 +628,22 @@
         document.getElementById('selected-patient-title').innerText = patientData.name;
         document.getElementById('selected-patient-meta').innerText = `Expediente Clínico Activo · ID: ${patientId.substring(0,8)}`;
 
-        // Refrescar botones activos visualmente
+        // Resaltar selección visual en la lista lateral
         document.querySelectorAll('[data-patient-btn]').forEach(b => {
             b.classList.remove('bg-clubVerdeMedio/30', 'border-clubCrema/20');
             b.classList.add('bg-white/5', 'border-white/5');
         });
-        document.querySelector(`[data-patient-btn="${patientId}"]`).classList.add('bg-clubVerdeMedio/30', 'border-clubCrema/20');
+        document.querySelector(`[data-patient-btn="${patientId}"]`)?.classList.add('bg-clubVerdeMedio/30', 'border-clubCrema/20');
 
-        // Descargar historial médico de Firestore
+        // Descarga de Historia Clínica Real
         const docRef = doc(db, "clinical_histories", `${currentPsychologistId}_${patientId}`);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            document.getElementById('clinical-history-text').value = docSnap.data().notes || "";
-        } else {
-            document.getElementById('clinical-history-text').value = "";
-        }
+        document.getElementById('clinical-history-text').value = docSnap.exists() ? docSnap.data().notes || "" : "";
 
-        // Cargar Recursos/Archivos del paciente
         loadPatientResources(patientId);
     }
 
-    // Guardar notas médicas del expediente
+    // Guardar historia clínica
     document.getElementById('btn-save-history').addEventListener('click', async () => {
         if (!selectedPatientId || !currentPsychologistId) return;
         const text = document.getElementById('clinical-history-text').value;
@@ -670,7 +661,7 @@
         }
     });
 
-    // Cargar Recursos Compartidos
+    // Recursos compartidos del Paciente
     function loadPatientResources(patientId) {
         const resList = document.getElementById('patient-resources-list');
         const qRes = query(collection(db, "shared_resources"), where("psychologistId", "==", currentPsychologistId), where("patientId", "==", patientId));
@@ -689,7 +680,7 @@
                             <span class="text-base">📄</span>
                             <div class="truncate">
                                 <a href="${item.fileUrl}" target="_blank" class="font-medium text-clubCrema hover:underline truncate block">${item.fileName}</a>
-                                <p class="text-[10px] text-gray-500">Compartido con éxito</p>
+                                <p class="text-[10px] text-gray-500">Recurso disponible</p>
                             </div>
                         </div>
                     </div>
@@ -699,7 +690,7 @@
         });
     }
 
-    // Carga real de archivos adjuntos (Mapeado a Base64/Firestore para evitar bloqueos de reglas Storage)
+    // Subir Recurso en Base64 a Firestore
     document.getElementById('upload-resource').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file || !selectedPatientId) return;
@@ -719,7 +710,7 @@
                     createdAt: serverTimestamp()
                 });
                 label.innerText = "Subir nuevo recurso";
-                alert("Recurso clínico compartido con el paciente.");
+                alert("Archivo compartido correctamente.");
             } catch (err) {
                 label.innerText = "Error al subir";
             }
@@ -727,55 +718,43 @@
         reader.readAsDataURL(file);
     });
 
-    // ================= LÓGICA DE CHAT INTERNO EN TIEMPO REAL =================
+    // ================= APERTURA Y ESCUCHA EN VIVO DEL CHAT =================
     function openChatWindow(patientId) {
         if (unsubscribeChatMessages) unsubscribeChatMessages();
         
+        selectedPatientId = patientId;
         const patientData = globalActivePatientsMap.get(patientId);
+        
         document.getElementById('chat-window-placeholder').classList.add('hidden');
         document.getElementById('chat-window-container').classList.remove('hidden');
         document.getElementById('chat-target-name').innerText = patientData.name;
 
-        selectedPatientId = patientId;
-
-        // Determinar ID único del canal conversacional
+        // Identificador simétrico de canal para evitar duplicados
         const chatId = currentPsychologistId < patientId ? `${currentPsychologistId}_${patientId}` : `${patientId}_${currentPsychologistId}`;
         const qMessages = query(collection(db, "chats", chatId, "messages"), where("createdAt", "!=", null));
-
         const body = document.getElementById('chat-messages-body');
 
-        // Escucha activa de mensajes
+        // Escucha en tiempo real de los mensajes del canal
         unsubscribeChatMessages = onSnapshot(qMessages, (snap) => {
             const msgs = [];
             snap.forEach(doc => msgs.push(doc.data()));
-            // Ordenamos de más antiguos a más nuevos
             msgs.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
 
             body.innerHTML = msgs.map(m => {
                 const isMe = m.senderId === currentPsychologistId;
-                if (isMe) {
-                    return `
-                        <div class="flex flex-col items-end max-w-[80%] ml-auto mb-2">
-                            <div class="bg-clubVerdeMedio text-white p-3 rounded-2xl rounded-tr-none border border-white/10 leading-relaxed">
-                                ${m.text}
-                            </div>
+                return `
+                    <div class="flex flex-col ${isMe ? 'items-end ml-auto' : 'items-start'} max-w-[80%] mb-2">
+                        <div class="${isMe ? 'bg-clubVerdeMedio text-white rounded-tr-none border border-white/10' : 'bg-white/10 text-white rounded-tl-none'} p-3 rounded-2xl leading-relaxed">
+                            ${m.text}
                         </div>
-                    `;
-                } else {
-                    return `
-                        <div class="flex flex-col items-start max-w-[80%] mb-2">
-                            <div class="bg-white/10 text-white p-3 rounded-2xl rounded-tl-none leading-relaxed">
-                                ${m.text}
-                            </div>
-                        </div>
-                    `;
-                }
+                    </div>
+                `;
             }).join("");
-            body.scrollTop = body.scrollHeight; // Desplazar abajo automáticamente
+            body.scrollTop = body.scrollHeight; 
         });
     }
 
-    // Enviar Mensaje
+    // Enviar mensajes en caliente al chat
     document.getElementById('form-chat-send').addEventListener('submit', async (e) => {
         e.preventDefault();
         const input = document.getElementById('chat-input-message');
@@ -783,8 +762,8 @@
         if (!text || !selectedPatientId) return;
 
         const chatId = currentPsychologistId < selectedPatientId ? `${currentPsychologistId}_${selectedPatientId}` : `${selectedPatientId}_${currentPsychologistId}`;
-        
         input.value = "";
+
         try {
             await addDoc(collection(db, "chats", chatId, "messages"), {
                 senderId: currentPsychologistId,
@@ -792,24 +771,20 @@
                 createdAt: serverTimestamp()
             });
         } catch (err) {
-            console.error("Error al enviar mensaje:", err);
+            console.error("Error al enviar el mensaje:", err);
         }
     });
 
-    // ================= BOTÓN DE CERRAR SESIÓN HERRADO =================
-    const btnLogout = document.getElementById('btn-logout');
-    if (btnLogout) {
-        btnLogout.addEventListener('click', async () => {
-            try {
-                if (unsubscribeChatMessages) unsubscribeChatMessages();
-                await signOut(auth);
-                alert("Sesión cerrada correctamente. ¡Que tengas un excelente descanso, Doctora!");
-                window.location.href = "auth.html";
-            } catch (error) {
-                console.error("Error al cerrar sesión:", error);
-            }
-        });
-    }
+    // Desconexión de sesión
+    document.getElementById('btn-logout')?.addEventListener('click', async () => {
+        try {
+            if (unsubscribeChatMessages) unsubscribeChatMessages();
+            await signOut(auth);
+            window.location.href = "auth.html";
+        } catch (error) {
+            console.error(error);
+        }
+    });
 </script>
 </body>
 </html>
