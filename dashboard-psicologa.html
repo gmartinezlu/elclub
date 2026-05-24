@@ -30,47 +30,49 @@
             }
         }
     </script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
 </head>
 <body class="font-sans bg-clubOscuro text-white min-h-screen md:flex antialiased">
 
+    <!-- SIDEBAR -->
     <aside class="w-full md:w-64 bg-clubVerde text-white flex flex-col justify-between p-6 border-r border-white/5 shrink-0">
         <div>
             <div class="text-2xl font-serif font-bold tracking-wide text-clubCrema mb-8 text-center md:text-left">
                 El Club
             </div>
             
-            <div class="bg-clubVerdeMedio rounded-xl p-4 flex items-center gap-3 border border-white/10 mb-8">
-                <div class="w-11 h-11 bg-clubCrema text-clubVerde rounded-full flex items-center justify-center text-sm font-bold shadow-inner">
-                    AM
+            <!-- Perfil Profesional con Foto Modificable -->
+            <div class="bg-clubVerdeMedio rounded-xl p-4 flex items-center gap-3 border border-white/10 mb-8 relative group">
+                <div class="relative w-12 h-12 shrink-0">
+                    <img id="psychologist-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=150&auto=format&fit=crop" alt="Foto de perfil" class="w-full h-full object-cover rounded-full border border-clubCrema/40">
+                    <label for="upload-avatar" class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center text-[10px] text-clubCrema font-bold opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+                        CAMBIAR
+                    </label>
+                    <input type="file" id="upload-avatar" accept="image/*" class="hidden">
                 </div>
-                <div>
-                    <h4 id="psychologist-name" class="text-sm font-bold tracking-wide text-white">Ana Martínez</h4>
+                <div class="overflow-hidden">
+                    <h4 id="psychologist-name" class="text-sm font-bold tracking-wide text-white truncate">Ana Martínez</h4>
                     <p class="text-[10px] uppercase tracking-wider text-clubCrema/80 font-medium">Psicóloga</p>
                 </div>
             </div>
 
-            <nav class="space-y-1.5 text-sm font-medium">
-                <a href="#" class="flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl transition-all shadow-md">
+            <!-- Navegación Dinámica por Tabs -->
+            <nav id="sidebar-nav" class="space-y-1.5 text-sm font-medium">
+                <button data-tab="tab-inicio" class="w-full flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl transition-all shadow-md tab-btn">
                     <span>🏠</span> Inicio
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">📅</span> Agenda
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">👥</span> Mis pacientes
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">📝</span> Notas clínicas
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">💰</span> Ingresos
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">👤</span> Mi perfil
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">⚙️</span> Configuración
-                </a>
+                </button>
+                <button data-tab="tab-agenda" class="w-full flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all tab-btn">
+                    <span>📅</span> Agenda y Google
+                </button>
+                <button data-tab="tab-pacientes" class="w-full flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all tab-btn">
+                    <span>👥</span> Mis Pacientes Activos
+                </button>
+                <button data-tab="tab-chat" class="w-full flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all tab-btn">
+                    <span>💬</span> Centro de Mensajes
+                </button>
             </nav>
         </div>
 
@@ -81,12 +83,13 @@
         </div>
     </aside>
 
+    <!-- CONTENEDOR PRINCIPAL -->
     <main class="flex-grow p-6 md:p-10 space-y-8 overflow-y-auto">
         
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6">
             <div>
                 <h1 id="psychologist-greeting" class="text-2xl md:text-3xl font-serif font-semibold tracking-wide">Hola, Ana 👋</h1>
-                <p id="current-date" class="text-xs text-gray-400 mt-1 font-medium uppercase tracking-wider"></p>
+                <p id="current-date" class="text-xs text-gray-400 mt-1 font-medium uppercase tracking-wider">SÁBADO, 23 DE MAYO DE 2026</p>
             </div>
             <button class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-5 py-3.5 rounded-full shadow-lg hover:bg-white transition-all">
                 + Nueva cita
@@ -99,129 +102,410 @@
             <p class="text-sm text-gray-300 mt-2 leading-relaxed">Puedes entrar a tu panel, pero tu perfil no aparecerá en el catálogo de pacientes hasta que administración lo revise y lo marque como disponible.</p>
         </section>
 
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Citas hoy</p>
-                <h3 id="today-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">0</h3>
-            </div>
-            <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Pacientes activos</p>
-                <h3 id="active-patients-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">0</h3>
-            </div>
-            <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Ingresos del mes</p>
-                <h3 id="month-income" class="text-2xl font-bold font-mono mt-2 text-clubCrema">$0 <span class="text-[10px] text-gray-500 font-sans font-normal">COP</span></h3>
-            </div>
-            <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Calificación</p>
-                <h3 class="text-2xl font-bold font-mono mt-2 text-yellow-400">4.9 ★</h3>
-            </div>
-        </section>
+        <!-- ================= TAB: INICIO ================= -->
+        <div id="tab-inicio" class="tab-content active space-y-8">
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Citas hoy</p>
+                    <h3 id="today-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">2</h3>
+                </div>
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Pacientes activos</p>
+                    <h3 id="active-patients-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">12</h3>
+                </div>
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Ingresos del mes</p>
+                    <h3 id="month-income" class="text-2xl font-bold font-mono mt-2 text-clubCrema">$1.450.000 <span class="text-[10px] text-gray-500 font-sans font-normal">COP</span></h3>
+                </div>
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Calificación</p>
+                    <h3 class="text-2xl font-bold font-mono mt-2 text-yellow-400">4.9 ★</h3>
+                </div>
+            </section>
 
-        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <div class="lg:col-span-7 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
-                <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Citas de hoy</h3>
-                
-                <div id="psychologist-appointments" class="space-y-3">
-                    <p class="text-gray-500 text-sm italic">Cargando agenda...</p>
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-7 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
+                    <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Citas de hoy</h3>
+                    <div id="psychologist-appointments" class="space-y-3">
+                        <!-- Render Dinámico -->
+                        <div class="flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-mono font-bold text-clubCrema bg-clubVerde px-2.5 py-1.5 rounded-md">08:00</span>
+                                <div>
+                                    <h5 class="text-sm font-semibold">Carlos Mendoza</h5>
+                                    <p class="text-[11px] text-gray-400">Enlace de Meet vinculado automáticamente</p>
+                                </div>
+                            </div>
+                            <a href="https://meet.google.com/abc-defg-hij" target="_blank" class="text-xs bg-clubVerdeMedio border border-white/10 text-clubCrema px-3 py-1.5 rounded-lg hover:bg-clubVerde transition-all">Unirse a Meet</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
+                    <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Resumen de Actividad</h3>
+                    <div class="text-sm text-gray-400 space-y-3">
+                        <p>✓ Integración con Google Workspace activa.</p>
+                        <p>✓ Configuración horaria: Bloques de 60 min + 15 min de descanso estricto.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= TAB: AGENDA & INTEGRACIONES ================= -->
+        <div id="tab-agenda" class="tab-content space-y-6">
+            <div class="bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-6">
+                <div>
+                    <h2 class="text-xl font-serif font-semibold text-clubCrema">Integraciones de Google Workspace</h2>
+                    <p class="text-xs text-gray-400 mt-1">Conecta tus herramientas para automatizar enlaces de Meet y sincronizar calendarios.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Google Meet Card -->
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col justify-between">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-blue-500 rounded-full"></span> Google Meet
+                                </h3>
+                                <p class="text-xs text-gray-400 mt-1">Generación automática de salas de videoconferencia únicas por paciente.</p>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between">
+                            <span id="meet-status" class="text-xs text-emerald-400 font-medium">● Vinculado correctamente</span>
+                            <button id="btn-toggle-meet" class="text-xs bg-red-500/10 text-red-400 border border-red-500/20 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all">Desconectar</button>
+                        </div>
+                    </div>
+
+                    <!-- Google Calendar Card -->
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col justify-between">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span> Google Calendar
+                                </h3>
+                                <p class="text-xs text-gray-400 mt-1">Sincroniza tus citas de El Club con tu calendario personal o laboral.</p>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between">
+                            <span id="calendar-status" class="text-xs text-gray-400 font-medium">○ No conectado</span>
+                            <button id="btn-toggle-calendar" class="text-xs bg-clubCrema text-clubVerde font-bold px-3 py-1.5 rounded-lg hover:bg-white transition-all">Conectar cuenta</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestor de Disponibilidad y Horarios -->
+                <div class="border-t border-white/5 pt-6 space-y-4">
+                    <div>
+                        <h3 class="text-base font-serif font-semibold text-clubCrema">Configuración Horaria de Sesiones</h3>
+                        <p class="text-xs text-gray-400">Las sesiones se calculan estrictamente sobre bloques fijos para garantizar tu tiempo de descanso profesional.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Duración de Consulta</label>
+                            <input type="text" value="60 minutos" disabled class="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-sm font-mono text-clubCrema text-center font-bold">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Descanso Obligatorio</label>
+                            <input type="text" value="15 minutos (Mínimo)" disabled class="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-sm font-mono text-emerald-400 text-center font-bold">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Intervalo Total por Bloque</label>
+                            <input type="text" value="75 minutos" disabled class="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-sm font-mono text-gray-300 text-center">
+                        </div>
+                    </div>
+
+                    <!-- Configuración de Jornadas Disponibles -->
+                    <div class="space-y-3">
+                        <label class="text-xs font-bold uppercase tracking-wider text-gray-400 block">Días y Ventanas Horarias Disponibles</label>
+                        
+                        <div id="schedule-selector-container" class="space-y-2">
+                            <!-- Ejemplo Día de la semana -->
+                            <div class="flex flex-wrap items-center justify-between bg-white/5 border border-white/5 p-3 rounded-xl gap-3">
+                                <label class="flex items-center gap-3 text-sm font-medium w-32">
+                                    <input type="checkbox" checked class="w-4 h-4 accent-clubVerdeMedio rounded"> Lunes
+                                </label>
+                                <div class="flex items-center gap-2 text-sm font-mono">
+                                    <input type="time" value="08:00" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                                    <span>a</span>
+                                    <input type="time" value="13:00" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                                </div>
+                                <div class="flex items-center gap-2 text-sm font-mono">
+                                    <input type="time" value="14:00" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                                    <span>a</span>
+                                    <input type="time" value="18:00" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap items-center justify-between bg-white/5 border border-white/5 p-3 rounded-xl gap-3">
+                                <label class="flex items-center gap-3 text-sm font-medium w-32">
+                                    <input type="checkbox" checked class="w-4 h-4 accent-clubVerdeMedio rounded"> Martes
+                                </label>
+                                <div class="flex items-center gap-2 text-sm font-mono">
+                                    <input type="time" value="08:00" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                                    <span>a</span>
+                                    <input type="time" value="12:00" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                                </div>
+                                <div class="flex items-center gap-2 text-sm font-mono">
+                                    <input type="time" value="14:00" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                                    <span>a</span>
+                                    <input type="time" value="17:00" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex justify-end">
+                            <button id="btn-save-schedule" class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-white transition-all">
+                                Guardar Configuración de Agenda
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="lg:col-span-5 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
-                <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Pacientes recientes</h3>
+        <!-- ================= TAB: MIS PACIENTES ACTIVOS ================= -->
+        <div id="tab-pacientes" class="tab-content space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
-                <div id="recent-patients" class="divide-y divide-white/5">
-                    <p class="text-gray-500 text-sm italic">Cargando pacientes...</p>
+                <!-- Lista de Pacientes Activos Separados -->
+                <div class="lg:col-span-4 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-4">
+                    <h3 class="text-base font-serif font-semibold text-clubCrema border-b border-white/5 pb-2">Pacientes Activos</h3>
+                    <div id="active-patients-list" class="space-y-2">
+                        <!-- Botón/Fila de paciente interactiva -->
+                        <button class="w-full text-left p-3 rounded-xl bg-clubVerdeMedio/30 border border-clubCrema/20 flex items-center gap-3 transition-all" onclick="selectPatient('Carlos Mendoza', 'ID-10294')">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Carlos Mendoza</h4>
+                                <p class="text-[11px] text-clubCrema/70 font-mono">Última sesión: Ayer</p>
+                            </div>
+                        </button>
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 flex items-center gap-3 hover:bg-white/10 transition-all" onclick="selectPatient('María Paula Gomez', 'ID-49204')">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">María Paula Gomez</h4>
+                                <p class="text-[11px] text-gray-400 font-mono">Última sesión: Hace 4 días</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Expediente Clínico y Recursos del Paciente Seleccionado -->
+                <div class="lg:col-span-8 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-6">
+                    <div class="flex flex-wrap justify-between items-start border-b border-white/5 pb-4 gap-2">
+                        <div>
+                            <h3 id="selected-patient-title" class="text-lg font-serif font-semibold text-clubCrema">Carlos Mendoza</h3>
+                            <p id="selected-patient-meta" class="text-xs text-gray-400 font-mono">Expediente Clínico Activo · ID-10294</p>
+                        </div>
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full uppercase tracking-wider font-bold">En Tratamiento</span>
+                    </div>
+
+                    <!-- Historia Clínica Completa -->
+                    <div class="space-y-3">
+                        <label class="text-xs font-bold uppercase tracking-wider text-clubCrema block">Evolución e Historia Clínica</label>
+                        <textarea id="clinical-history-text" rows="5" class="w-full bg-clubOscuro border border-white/10 rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-clubCrema/40 leading-relaxed" placeholder="Escribe aquí las observaciones clínicas, diagnóstico, avances y notas de evolución del paciente...">Paciente masculino de 28 años. Presenta avances significativos en el manejo de ansiedad generalizada mediante la reestructuración cognitiva. Manifiesta mejoría en sus ciclos de sueño y constancia en los ejercicios de respiración diafragmática asignados en la sesión anterior.</textarea>
+                        <div class="flex justify-end">
+                            <button class="bg-clubVerdeMedio text-clubCrema border border-white/10 text-xs font-bold px-4 py-2 rounded-lg hover:bg-clubVerde transition-all">Actualizar Historia Clínica</button>
+                        </div>
+                    </div>
+
+                    <!-- Compartir Recursos Didácticos o Tareas -->
+                    <div class="border-t border-white/5 pt-5 space-y-4">
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Recursos y Ejercicios Compartidos</h4>
+                            <p class="text-xs text-gray-400">Sube guías PDF, bitácoras o lecturas recomendadas exclusivas para este paciente.</p>
+                        </div>
+
+                        <!-- Zona de carga de archivos -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="border border-dashed border-white/20 hover:border-clubCrema/40 rounded-xl p-4 flex flex-col items-center justify-center text-center group cursor-pointer transition-colors relative">
+                                <span class="text-xl mb-1">📁</span>
+                                <span class="text-xs font-semibold text-clubCrema">Subir nuevo recurso</span>
+                                <span class="text-[10px] text-gray-500 mt-0.5">PDF, DOCX o Imágenes hasta 10MB</span>
+                                <input type="file" id="upload-resource" class="absolute inset-0 opacity-0 cursor-pointer">
+                            </div>
+
+                            <!-- Listado de Archivos del Paciente -->
+                            <div class="space-y-2">
+                                <div class="bg-white/5 border border-white/5 rounded-xl p-3 flex justify-between items-center text-xs">
+                                    <div class="flex items-center gap-2 truncate">
+                                        <span class="text-base">📄</span>
+                                        <div class="truncate">
+                                            <p class="font-medium text-gray-200 truncate">Guia_Control_Ansiedad.pdf</p>
+                                            <p class="text-[10px] text-gray-500">2.4 MB · Compartido hace 3 días</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-red-400 hover:text-red-300 ml-2 font-bold">×</button>
+                                </div>
+                                <div class="bg-white/5 border border-white/5 rounded-xl p-3 flex justify-between items-center text-xs">
+                                    <div class="flex items-center gap-2 truncate">
+                                        <span class="text-base">📄</span>
+                                        <div class="truncate">
+                                            <p class="font-medium text-gray-200 truncate">Bitacora_Sueno_Semanal.docx</p>
+                                            <p class="text-[10px] text-gray-500">512 KB · Compartido hoy</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-red-400 hover:text-red-300 ml-2 font-bold">×</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-        </section>
+        <!-- ================= TAB: CHAT INTERNO ================= -->
+        <div id="tab-chat" class="tab-content space-y-6">
+            <div class="bg-clubFondo border border-white/5 rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 h-[550px]">
+                
+                <!-- Lista de Canales Abiertos -->
+                <div class="md:col-span-4 border-r border-white/5 flex flex-col bg-black/10">
+                    <div class="p-4 border-b border-white/5">
+                        <h3 class="text-sm font-serif font-semibold text-clubCrema">Mensajes Directos</h3>
+                    </div>
+                    <div class="flex-grow overflow-y-auto divide-y divide-white/5">
+                        <button class="w-full text-left p-4 bg-clubVerdeMedio/20 flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                            <div class="flex-grow overflow-hidden">
+                                <div class="flex justify-between items-baseline">
+                                    <span class="text-xs font-bold text-white truncate">Carlos Mendoza</span>
+                                    <span class="text-[9px] text-gray-500 font-mono">10:42 PM</span>
+                                </div>
+                                <p class="text-xs text-clubCrema truncate mt-0.5">Doctora, ya completé el ejercicio de respiración...</p>
+                            </div>
+                        </button>
+                        <button class="w-full text-left p-4 hover:bg-white/5 flex items-center gap-3 transition-colors">
+                            <div class="w-2 h-2 rounded-full bg-gray-600"></div>
+                            <div class="flex-grow overflow-hidden">
+                                <div class="flex justify-between items-baseline">
+                                    <span class="text-xs font-medium text-gray-300 truncate">María Paula Gomez</span>
+                                    <span class="text-[9px] text-gray-500 font-mono">Ayer</span>
+                                </div>
+                                <p class="text-xs text-gray-500 truncate mt-0.5">Muchas gracias por el material de apoyo de esta semana.</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ventana Activa del Chat -->
+                <div class="md:col-span-8 flex flex-col justify-between bg-white/[0.01]">
+                    <!-- Encabezado Conversación -->
+                    <div class="p-4 border-b border-white/5 flex items-center justify-between bg-black/20">
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Carlos Mendoza</h4>
+                            <p class="text-[10px] text-emerald-400 font-medium flex items-center gap-1">● Paciente en línea</p>
+                        </div>
+                    </div>
+
+                    <!-- Cuerpo de Mensajes -->
+                    <div class="flex-grow p-4 overflow-y-auto space-y-4 text-xs">
+                        <!-- Mensaje Recibido -->
+                        <div class="flex flex-col items-start max-w-[80%]">
+                            <div class="bg-white/10 text-white p-3 rounded-2xl rounded-tl-none leading-relaxed">
+                                Hola Doctora, buenas noches. Quería comentarle que ya completé el ejercicio de respiración que dejamos pautado. Me ayudó mucho a calmar la crisis de ansiedad de hoy por la tarde.
+                            </div>
+                            <span class="text-[9px] text-gray-500 font-mono mt-1 ml-1">10:40 PM</span>
+                        </div>
+
+                        <!-- Mensaje Enviado -->
+                        <div class="flex flex-col items-end max-w-[80%] ml-auto">
+                            <div class="bg-clubVerdeMedio text-white p-3 rounded-2xl rounded-tr-none border border-white/10 leading-relaxed">
+                                Excelente Carlos, me alegra muchísimo leer eso. Recuerda apuntar en la bitácora la intensidad de la crisis antes y después del ejercicio para analizarlo a detalle el próximo lunes en consulta.
+                            </div>
+                            <span class="text-[9px] text-clubCrema/60 font-mono mt-1 mr-1">10:42 PM · Enviado</span>
+                        </div>
+                    </div>
+
+                    <!-- Input de Escritura -->
+                    <div class="p-3 border-t border-white/5 bg-black/20 flex gap-2">
+                        <input type="text" placeholder="Escribe un mensaje de apoyo clínico..." class="flex-grow bg-clubOscuro border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-clubCrema/30">
+                        <button class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-5 rounded-xl hover:bg-white transition-all">
+                            Enviar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
+    <!-- LOGICA FRONTEND DE CONTROLADORES -->
+    <script>
+        // Lógica interactiva para cambiar de Vistas (Tabs) en el Sidebar sin recargar la página
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remover clases activas previas de todos los botones
+                tabButtons.forEach(b => {
+                    b.classList.remove('bg-clubCrema', 'text-clubVerde', 'shadow-md');
+                    b.classList.add('text-clubCrema', 'hover:bg-white/5');
+                });
+                // Ocultar todos los contenidos de las pestañas
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Activar pestaña seleccionada
+                btn.classList.add('bg-clubCrema', 'text-clubVerde', 'shadow-md');
+                btn.classList.remove('text-clubCrema', 'hover:bg-white/5');
+                
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Interacción para cambiar el expediente de paciente activo en pantalla
+        function selectPatient(name, id) {
+            document.getElementById('selected-patient-title').innerText = name;
+            document.getElementById('selected-patient-meta').innerText = `Expediente Clínico Activo · ${id}`;
+            document.getElementById('clinical-history-text').placeholder = `Escribe aquí el historial clínico de ${name}...`;
+            // Aquí puedes vaciar o rellenar el historial dinámicamente con Firebase si lo deseas
+        }
+
+        // Simulación visual inmediata para el avatar de perfil
+        const uploadAvatarInput = document.getElementById('upload-avatar');
+        if(uploadAvatarInput) {
+            uploadAvatarInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        document.getElementById('psychologist-img').src = event.target.result;
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+        }
+    </script>
+
     <script type="module">
-    // 1. Traemos al guardián desde tu archivo de configuración
+    // Firebase Core Integration
     import { checkAuth, auth, signOut, db, collection, query, where, onSnapshot, getUserProfile } from "./firebase-config.js";
 
-    // 2. Activamos al guardián: Le decimos que esta pantalla SOLO la pueden ver "psicologas"
     checkAuth("psicologa");
-
-    const money = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
 
     auth.onAuthStateChanged(async (user) => {
         if (!user) return;
 
         const profile = await getUserProfile(user);
         const displayName = profile ? `${profile.firstName || ""} ${profile.lastName || ""}`.trim() : "";
-        const firstName = (profile?.firstName || displayName || "Doctora").split(" ")[0];
         document.getElementById('psychologist-name').innerText = displayName || "Ana Martínez";
-        document.getElementById('psychologist-greeting').innerText = `Hola, ${firstName} 👋`;
+        
+        // Carga la foto guardada en Firebase si existe en el perfil del usuario
+        if (profile && profile.photoURL) {
+            document.getElementById('psychologist-img').src = profile.photoURL;
+        }
+
         const isPending = profile?.applicationStatus === "pending" || profile?.verificationStatus === "pending" || profile?.available === false;
         document.getElementById('professional-status-banner').classList.toggle('hidden', !isPending);
-
-        const q = query(collection(db, "appointments"), where("psychologistId", "==", user.uid));
-        const agendaContainer = document.getElementById('psychologist-appointments');
-        const patientsContainer = document.getElementById('recent-patients');
-
-        onSnapshot(q, (snapshot) => {
-            const appointments = [];
-            snapshot.forEach((doc) => appointments.push({ id: doc.id, ...doc.data() }));
-            appointments.sort((a, b) => `${a.date || ""} ${a.time || ""}`.localeCompare(`${b.date || ""} ${b.time || ""}`));
-
-            const patientIds = new Set(appointments.map(item => item.patientId).filter(Boolean));
-            const totalIncome = appointments.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-
-            document.getElementById('today-count').innerText = appointments.filter(item => item.status !== "cancelada").length;
-            document.getElementById('active-patients-count').innerText = patientIds.size;
-            document.getElementById('month-income').innerHTML = `${money.format(totalIncome)} <span class="text-[10px] text-gray-500 font-sans font-normal">COP</span>`;
-
-            if (!appointments.length) {
-                agendaContainer.innerHTML = '<p class="text-gray-500 text-sm">Aún no tienes citas confirmadas.</p>';
-                patientsContainer.innerHTML = '<p class="text-gray-500 text-sm">Los pacientes aparecerán cuando reserven.</p>';
-                return;
-            }
-
-            agendaContainer.innerHTML = appointments.map((item) => `
-                <div class="flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-xl hover:border-white/10 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <span class="text-xs font-mono font-bold text-clubCrema bg-clubVerde px-2.5 py-1.5 rounded-md">${item.time || "--:--"}</span>
-                        <div>
-                            <h5 class="text-sm font-semibold">${item.patientName || item.patientEmail || "Paciente"}</h5>
-                            <p class="text-[11px] text-gray-400">${item.date || "Fecha por confirmar"} · ${item.modality || "Videollamada"}</p>
-                        </div>
-                    </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.status || "confirmada"}</span>
-                </div>
-            `).join("");
-
-            const patients = [...patientIds].map((id) => {
-                const sessions = appointments.filter(item => item.patientId === id);
-                return sessions[sessions.length - 1];
-            });
-
-            patientsContainer.innerHTML = patients.map((item) => `
-                <div class="flex justify-between items-center py-3.5 first:pt-0 last:pb-0">
-                    <div class="flex items-center gap-3">
-                        <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
-                        <div>
-                            <h5 class="text-sm font-medium">${item.patientName || item.patientEmail || "Paciente"}</h5>
-                            <p class="text-[10px] text-gray-500 font-mono">${appointments.filter(a => a.patientId === item.patientId).length} sesiones registradas</p>
-                        </div>
-                    </div>
-                    <span class="text-xs text-clubCrema font-semibold">Activo</span>
-                </div>
-            `).join("");
-        });
     });
 
-    // 3. Lógica para el botón de 'Cerrar Sesión'
     const btnLogout = document.getElementById('btn-logout');
     if (btnLogout) {
         btnLogout.addEventListener('click', async () => {
             try {
                 await signOut(auth);
                 alert("Sesión cerrada correctamente. ¡Que tengas un excelente descanso, Doctora!");
-                window.location.href = "auth.html"; // Lo manda de regreso al inicio
+                window.location.href = "auth.html";
             } catch (error) {
                 console.error("Error al cerrar sesión:", error);
             }
