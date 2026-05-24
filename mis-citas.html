@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Citas - El Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                colors: { clubVerde:'#084739', clubVerdeMedio:'#0f5445', clubCrema:'#eadac8', clubOscuro:'#1a1a1a', clubFondoCard:'#121212' },
+                fontFamily: { sans:['Plus Jakarta Sans','sans-serif'], serif:['Playfair Display','serif'] }
+            }}
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubOscuro text-white min-h-screen md:flex antialiased">
+
+    <!-- SIDEBAR -->
+    <aside class="w-full md:w-64 bg-clubVerde text-white flex flex-col justify-between p-6 border-r border-white/5 shrink-0">
+        <div>
+            <div class="text-2xl font-serif font-bold text-clubCrema mb-8">El Club</div>
+            <div class="bg-clubVerdeMedio rounded-xl p-4 flex items-center gap-3 border border-white/10 mb-8">
+                <div class="relative group cursor-pointer w-11 h-11">
+                    <div id="user-avatar" class="w-11 h-11 bg-clubCrema text-clubVerde rounded-full flex items-center justify-center text-sm font-bold overflow-hidden">
+                        <span id="user-initials">US</span>
+                        <img id="user-photo" class="hidden w-full h-full object-cover rounded-full" src="" alt="">
+                    </div>
+                </div>
+                <div>
+                    <h4 id="patient-name" class="text-sm font-bold text-white">Paciente</h4>
+                    <p class="text-[10px] uppercase tracking-wider text-clubCrema/80">Paciente</p>
+                </div>
+            </div>
+            <nav class="space-y-1.5 text-sm font-medium">
+                <a href="dashboard-paciente.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>🏠</span> Inicio</a>
+                <a href="mis-citas.html" class="flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl shadow-md"><span>📅</span> Mis citas</a>
+                <a href="mis-notas.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>📓</span> Mis notas</a>
+                <a href="perfil-psicologa.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>🔍</span> Buscar psicóloga</a>
+                <a href="mis-pagos.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>💳</span> Pagos</a>
+                <a href="mi-perfil-paciente.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>👤</span> Mi perfil</a>
+            </nav>
+        </div>
+        <button id="btn-logout" class="w-full flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-clubCrema/60 hover:text-white px-4 py-3 transition-colors mt-8 pt-4 border-t border-white/10">
+            <span>🚪</span> Cerrar sesión
+        </button>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-grow p-6 md:p-10 space-y-8 overflow-y-auto">
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-serif font-semibold">Mis Citas 📅</h1>
+                <p class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Historial y próximas sesiones</p>
+            </div>
+            <a href="perfil-psicologa.html" class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-5 py-3.5 rounded-full shadow-lg hover:bg-white transition-all">
+                + Agendar nueva cita
+            </a>
+        </header>
+
+        <!-- Filtros -->
+        <div class="flex gap-3 flex-wrap">
+            <button data-filter="todas" class="filter-btn bg-clubCrema text-clubVerde text-xs font-bold px-4 py-2 rounded-full">Todas</button>
+            <button data-filter="confirmada" class="filter-btn bg-white/5 border border-white/10 text-gray-300 text-xs font-bold px-4 py-2 rounded-full hover:bg-white/10 transition-all">Confirmadas</button>
+            <button data-filter="completada" class="filter-btn bg-white/5 border border-white/10 text-gray-300 text-xs font-bold px-4 py-2 rounded-full hover:bg-white/10 transition-all">Completadas</button>
+            <button data-filter="cancelada" class="filter-btn bg-white/5 border border-white/10 text-gray-300 text-xs font-bold px-4 py-2 rounded-full hover:bg-white/10 transition-all">Canceladas</button>
+        </div>
+
+        <!-- Lista de citas -->
+        <div id="citas-container" class="space-y-4">
+            <p class="text-gray-500 text-sm italic">Cargando tus citas...</p>
+        </div>
+    </main>
+
+    <script type="module">
+        import { checkAuth, auth, signOut, db, collection, query, where, onSnapshot, getUserProfile, doc, updateDoc } from "./firebase-config.js";
+        import { loadProfilePhoto } from "./profile-photo.js";
+
+        checkAuth("paciente");
+
+        let allAppointments = [];
+        let currentFilter = "todas";
+
+        const statusColors = {
+            confirmada: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+            completada: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+            cancelada:  "bg-red-500/10 text-red-400 border-red-500/20",
+            pendiente:  "bg-amber-500/10 text-amber-400 border-amber-500/20"
+        };
+
+        function renderCitas(filter) {
+            const container = document.getElementById("citas-container");
+            const filtered = filter === "todas" ? allAppointments : allAppointments.filter(c => c.status === filter);
+
+            if (!filtered.length) {
+                container.innerHTML = `<div class="bg-clubFondoCard border border-white/5 rounded-2xl p-8 text-center">
+                    <p class="text-gray-400 text-sm">No tienes citas ${filter !== "todas" ? filter + "s" : ""} por ahora.</p>
+                    <a href="perfil-psicologa.html" class="inline-block mt-4 bg-clubCrema text-clubVerde font-bold text-xs px-5 py-2.5 rounded-full hover:bg-white transition-all">Agendar primera cita</a>
+                </div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(c => {
+                const statusClass = statusColors[c.status] || statusColors.confirmada;
+                const meetBtn = c.meetLink && c.status === "confirmada"
+                    ? `<a href="${c.meetLink}" target="_blank" class="flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold px-4 py-2 rounded-xl hover:bg-blue-500/20 transition-all">📹 Entrar a Meet</a>`
+                    : "";
+                const cancelBtn = c.status === "confirmada"
+                    ? `<button data-id="${c.id}" class="btn-cancel text-[10px] text-red-400 hover:text-red-300 font-semibold transition-colors">Cancelar cita</button>`
+                    : "";
+
+                return `
+                <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-5 flex flex-col lg:flex-row justify-between gap-4 hover:border-white/10 transition-colors">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-clubVerde rounded-xl p-3 text-center min-w-[60px]">
+                            <div class="text-xs font-mono text-clubCrema/70">${c.dateISO ? c.dateISO.slice(5,7)+"/"+c.dateISO.slice(8,10) : "--"}</div>
+                            <div class="text-lg font-bold font-mono text-clubCrema">${c.time || "--"}</div>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-sm font-bold text-white">${c.psychologistName || "Psicóloga"}</h4>
+                            <p class="text-xs text-gray-400">${c.date || c.dateISO || "Fecha"} · ${c.modality || "Videollamada"} · 60 min</p>
+                            <p class="text-xs text-gray-500">Pago: ${c.paymentMethod?.toUpperCase() || "—"} · $${new Intl.NumberFormat("es-CO").format(c.amount || 0)} COP</p>
+                            ${cancelBtn}
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end justify-between gap-3">
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${statusClass}">${c.status || "confirmada"}</span>
+                        ${meetBtn}
+                    </div>
+                </div>`;
+            }).join("");
+
+            // Eventos cancelar
+            document.querySelectorAll(".btn-cancel").forEach(btn => {
+                btn.addEventListener("click", async () => {
+                    if (!confirm("¿Cancelar esta cita? Esta acción no se puede deshacer.")) return;
+                    await updateDoc(doc(db, "appointments", btn.dataset.id), { status: "cancelada", canceledAt: new Date().toISOString() });
+                });
+            });
+        }
+
+        // Filtros
+        document.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                currentFilter = btn.dataset.filter;
+                document.querySelectorAll(".filter-btn").forEach(b => {
+                    b.className = "filter-btn bg-white/5 border border-white/10 text-gray-300 text-xs font-bold px-4 py-2 rounded-full hover:bg-white/10 transition-all";
+                });
+                btn.className = "filter-btn bg-clubCrema text-clubVerde text-xs font-bold px-4 py-2 rounded-full";
+                renderCitas(currentFilter);
+            });
+        });
+
+        auth.onAuthStateChanged(async user => {
+            if (!user) return;
+            const profile = await getUserProfile(user);
+            const name = profile ? `${profile.firstName||""} ${profile.lastName||""}`.trim() : user.email;
+            document.getElementById("patient-name").innerText = name;
+            document.getElementById("user-initials").innerText = name.split(" ").slice(0,2).map(w=>w[0]).join("").toUpperCase() || "US";
+            if (profile?.photoURL) loadProfilePhoto(profile.photoURL, { avatarId:"user-photo", initialsId:"user-initials" });
+
+            const q = query(collection(db,"appointments"), where("patientId","==",user.uid));
+            onSnapshot(q, snap => {
+                allAppointments = snap.docs.map(d=>({id:d.id,...d.data()}))
+                    .sort((a,b) => (b.dateISO||"").localeCompare(a.dateISO||""));
+                renderCitas(currentFilter);
+            });
+        });
+
+        document.getElementById("btn-logout").addEventListener("click", async () => {
+            if (confirm("¿Cerrar sesión?")) { await signOut(auth); location.href="auth.html"; }
+        });
+    </script>
+</body>
+</html>
