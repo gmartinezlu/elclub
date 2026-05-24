@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <script>
         tailwind.config = {
@@ -347,6 +348,7 @@
     import { 
         checkAuth, auth, signOut, db, collection, query, where, onSnapshot, doc, getDoc, updateDoc, setDoc, addDoc, serverTimestamp 
     } from "./firebase-config.js";
+    import { getGoogleCalendarAuthUrl, isGoogleCalendarConnected } from "./google-calendar.js";
 
     checkAuth("psicologa");
 
@@ -358,6 +360,20 @@
     let globalActivePatientsMap = new Map();
 
     const DAYS_OF_WEEK = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+
+    function setCalendarStatus(profile) {
+        const calendarStatusEl = document.getElementById('calendar-status');
+        const connectBtn = document.getElementById('btn-connect-calendar');
+        if (isGoogleCalendarConnected(profile)) {
+            calendarStatusEl.innerText = "● Conectado";
+            calendarStatusEl.className = "text-xs text-emerald-400 font-medium";
+            connectBtn.innerText = "Reautenticar Calendar";
+        } else {
+            calendarStatusEl.innerText = "○ No vinculado";
+            calendarStatusEl.className = "text-xs text-gray-400 font-medium";
+            connectBtn.innerText = "Vincular Calendar";
+        }
+    }
 
     // Formatear Fecha Superior Fija
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -399,6 +415,7 @@
             meetStatusEl.className = "text-xs text-gray-400 font-medium";
         }
 
+        setCalendarStatus(profile || {});
         renderAvailabilityForm(profile?.availability || {});
 
         // 2. ESCUCHA EN TIEMPO REAL DE CITAS (FILTRADOS Y CONTADORES ORIGINALES)
@@ -523,6 +540,23 @@
             document.getElementById('meet-status').className = "text-xs text-emerald-400 font-medium truncate max-w-[180px]";
         } catch (err) {
             console.error(err);
+        }
+    });
+
+    // Conectar Google Calendar
+    document.getElementById('btn-connect-calendar').addEventListener('click', async () => {
+        try {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Por favor inicia sesión primero.");
+                return;
+            }
+            const idToken = await user.getIdToken();
+            const authUrl = await getGoogleCalendarAuthUrl(idToken);
+            window.location.href = authUrl;
+        } catch (err) {
+            console.error(err);
+            alert(err.message || "No se pudo iniciar la conexión con Google Calendar.");
         }
     });
 
