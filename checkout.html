@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva tu Sesión - El Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clubVerde: '#084739',
+                        clubVerdeMedio: '#0f5445',
+                        clubCrema: '#eadac8',
+                        clubOscuro: '#1a1a1a',
+                        clubFondoCard: '#121212'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubOscuro text-white min-h-screen antialiased">
+
+    <header class="bg-clubVerde py-4 px-6 md:px-12 flex justify-between items-center shadow-lg sticky top-0 z-50">
+        <a href="perfil-psicologa.html" class="text-xs font-semibold uppercase tracking-wider text-clubCrema hover:underline flex items-center gap-2">
+            <span>←</span> Volver
+        </a>
+        <div class="text-2xl font-serif font-bold tracking-wide text-clubCrema">El Club</div>
+        <div class="w-20"></div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 md:px-8 py-10 space-y-10">
+
+        <!-- PASOS -->
+        <section class="max-w-2xl mx-auto px-4">
+            <div class="flex items-center justify-between text-center relative">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-white/10 -z-10"></div>
+                <div id="progress-bar" class="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-clubCrema -z-10 transition-all duration-500" style="width:33%"></div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-clubCrema text-clubVerde flex items-center justify-center text-xs font-bold">✓</div>
+                    <span class="text-[10px] uppercase tracking-wider text-gray-400">1. Psicóloga</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div id="step2-icon" class="w-8 h-8 rounded-full bg-clubVerde border-2 border-clubCrema text-clubCrema flex items-center justify-center text-xs font-bold">2</div>
+                    <span id="step2-label" class="text-[10px] uppercase tracking-wider text-clubCrema font-bold">2. Fecha y Hora</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div id="step3-icon" class="w-8 h-8 rounded-full bg-clubFondoCard border border-white/10 text-gray-500 flex items-center justify-center text-xs font-bold">3</div>
+                    <span id="step3-label" class="text-[10px] uppercase tracking-wider text-gray-500">3. Pago</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div id="step4-icon" class="w-8 h-8 rounded-full bg-clubFondoCard border border-white/10 text-gray-500 flex items-center justify-center text-xs font-bold">4</div>
+                    <span id="step4-label" class="text-[10px] uppercase tracking-wider text-gray-500">4. Confirmación</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="lg:col-span-7 space-y-6">
+
+                <!-- Card psicóloga -->
+                <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-4 flex items-center gap-4">
+                    <div class="w-14 h-14 bg-clubCrema text-clubVerde rounded-full flex items-center justify-center text-lg font-bold overflow-hidden flex-shrink-0">
+                        <span id="psy-initials">--</span>
+                        <img id="psy-photo" class="hidden w-full h-full object-cover rounded-full" src="" alt="">
+                    </div>
+                    <div>
+                        <h4 id="psy-name" class="text-sm font-bold text-white">Cargando...</h4>
+                        <p id="psy-subtitle" class="text-[11px] text-gray-400">Sesión individual · 60 min</p>
+                        <p id="psy-price" class="text-xs font-bold text-clubCrema mt-1">$80.000 COP</p>
+                    </div>
+                </div>
+
+                <!-- Calendario -->
+                <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-6 space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                        <h3 class="text-sm font-serif font-semibold text-clubCrema">Selecciona una fecha</h3>
+                        <div class="flex items-center gap-2">
+                            <button id="prev-month" class="text-gray-400 hover:text-white px-2 text-lg">‹</button>
+                            <span id="cal-month" class="text-xs font-bold text-clubCrema font-mono w-32 text-center"></span>
+                            <button id="next-month" class="text-gray-400 hover:text-white px-2 text-lg">›</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold uppercase text-gray-500">
+                        <span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span><span>Do</span>
+                    </div>
+                    <div id="cal-days" class="grid grid-cols-7 gap-1 text-center text-xs font-mono"></div>
+                </div>
+
+                <!-- Horarios -->
+                <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-6 space-y-4">
+                    <h3 class="text-sm font-serif font-semibold text-clubCrema border-b border-white/5 pb-3">
+                        Horarios — <span id="date-label" class="text-gray-400 font-sans font-normal text-xs">elige una fecha primero</span>
+                    </h3>
+                    <div id="time-slots" class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                        <p class="col-span-4 text-gray-500 text-sm italic">Selecciona una fecha para ver los horarios disponibles.</p>
+                    </div>
+                </div>
+
+                <!-- Pago Wompi (oculto hasta elegir fecha+hora) -->
+                <div id="payment-section" class="hidden bg-clubFondoCard border border-white/5 rounded-2xl p-6 space-y-4">
+                    <h3 class="text-sm font-serif font-semibold text-clubCrema border-b border-white/5 pb-3">Método de pago</h3>
+                    <p class="text-xs text-gray-400">Pagos procesados por <strong class="text-white">Wompi</strong> — pasarela oficial colombiana.</p>
+
+                    <div class="space-y-3">
+                        <label class="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl p-4 cursor-pointer hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="pmethod" value="NEQUI" checked class="accent-clubCrema h-4 w-4">
+                                <div><span class="text-xs font-bold block">Nequi</span><span class="text-[10px] text-gray-400">Con tu número celular</span></div>
+                            </div>
+                            <span class="text-xs font-bold text-fuchsia-400 bg-fuchsia-500/10 border border-fuchsia-500/20 px-2 py-1 rounded-md">NEQUI</span>
+                        </label>
+                        <label class="flex items-center justify-between bg-white/5 border border-white/5 rounded-xl p-4 cursor-pointer hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="pmethod" value="PSE" class="accent-clubCrema h-4 w-4">
+                                <div><span class="text-xs font-bold block">PSE</span><span class="text-[10px] text-gray-400">Débito bancario</span></div>
+                            </div>
+                            <span class="text-xs font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-1 rounded-md">PSE</span>
+                        </label>
+                        <label class="flex items-center justify-between bg-white/5 border border-white/5 rounded-xl p-4 cursor-pointer hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="pmethod" value="DAVIPLATA" class="accent-clubCrema h-4 w-4">
+                                <div><span class="text-xs font-bold block">Daviplata</span><span class="text-[10px] text-gray-400">Billetera Davivienda</span></div>
+                            </div>
+                            <span class="text-xs font-bold text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-1 rounded-md">DAVI</span>
+                        </label>
+                        <label class="flex items-center justify-between bg-white/5 border border-white/5 rounded-xl p-4 cursor-pointer hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="pmethod" value="BREV" class="accent-clubCrema h-4 w-4">
+                                <div><span class="text-xs font-bold block">Brev</span><span class="text-[10px] text-gray-400">Pago rápido</span></div>
+                            </div>
+                            <span class="text-xs font-bold text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-1 rounded-md">BREV</span>
+                        </label>
+                    </div>
+
+                    <!-- Wompi widget se inyecta aquí -->
+                    <div id="wompi-widget"></div>
+
+                    <!-- Botón alternativo mientras configuras Wompi -->
+                    <button id="btn-confirm" class="w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl text-sm tracking-wide shadow-xl hover:bg-white transition-all">
+                        Confirmar y Pagar →
+                    </button>
+                    <p class="text-[10px] text-center text-gray-500">🔒 Pago seguro vía Wompi · SSL</p>
+                </div>
+            </div>
+
+            <!-- RESUMEN -->
+            <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
+                <section class="bg-clubFondoCard border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl">
+                    <h3 class="text-sm font-serif font-semibold text-clubCrema border-b border-white/5 pb-2">Resumen</h3>
+                    <div class="space-y-3 text-xs border-b border-white/5 pb-4">
+                        <div class="flex justify-between"><span class="text-gray-400">Profesional:</span><span id="sum-psy" class="text-white font-semibold">—</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Fecha:</span><span id="sum-date" class="text-white font-mono">—</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Hora:</span><span id="sum-time" class="text-white font-mono">—</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Duración:</span><span class="text-gray-300">60 min</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Modalidad:</span><span class="text-gray-300">Google Meet</span></div>
+                    </div>
+                    <div class="flex justify-between items-baseline pt-1">
+                        <span class="text-sm font-bold">Total:</span>
+                        <span id="sum-total" class="text-2xl font-bold font-mono text-clubCrema">$80.000 <span class="text-[10px] font-sans text-gray-400">COP</span></span>
+                    </div>
+                </section>
+
+                <button id="btn-to-payment" disabled
+                    class="w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl text-sm tracking-wide shadow-xl hover:bg-white transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    Continuar al pago →
+                </button>
+                <p class="text-[10px] text-center text-gray-500">Elige fecha y hora para continuar</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-clubFondoCard border-t border-white/5 py-6 text-center text-[11px] text-gray-500">
+        © 2026 El Club by Mile Moya · Pagos seguros vía Wompi Colombia.
+    </footer>
+
+    <script type="module">
+        import {
+            auth, db, onAuthStateChanged, getUserProfile,
+            doc, getDoc, collection, addDoc, getDocs, query, where, updateDoc, setDoc
+        } from "./firebase-config.js";
+
+        // ─── ESTADO ──────────────────────────────────────────────────────────
+        let user = null, profile = null, psy = null;
+        let selDate = null, selTime = null;
+        let calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
+        const psyId = new URLSearchParams(location.search).get("psychologistId");
+
+        const MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+        function fullName(p) { return (`${p.firstName||""} ${p.lastName||""}`).trim() || p.email || "Psicóloga"; }
+        function initials(p) { return fullName(p).split(/\s+/).slice(0,2).map(w=>w[0]).join("").toUpperCase(); }
+        function toISO(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
+        function fmtDate(d) { return d.toLocaleDateString("es-CO",{weekday:"long",day:"numeric",month:"long",year:"numeric"}); }
+        function fmtMoney(v) { return new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(v); }
+
+        // ─── CARGAR PSICÓLOGA ────────────────────────────────────────────────
+        async function loadPsy() {
+            if (!psyId) { alert("Elige una psicóloga primero."); location.href="perfil-psicologa.html"; return; }
+            const snap = await getDoc(doc(db,"users",psyId));
+            if (!snap.exists()) { alert("Psicóloga no encontrada."); location.href="perfil-psicologa.html"; return; }
+            psy = { id: snap.id, ...snap.data() };
+            const name = fullName(psy);
+            const price = psy.price || 80000;
+
+            document.getElementById("psy-initials").innerText = initials(psy);
+            if (psy.photoURL) {
+                document.getElementById("psy-photo").src = psy.photoURL;
+                document.getElementById("psy-photo").classList.remove("hidden");
+                document.getElementById("psy-initials").classList.add("hidden");
+            }
+            document.getElementById("psy-name").innerText = name;
+            document.getElementById("psy-subtitle").innerText = `${psy.specialty||"Psicóloga"} · Sesión 60 min`;
+            document.getElementById("psy-price").innerText = `${fmtMoney(price)} / sesión`;
+            document.getElementById("sum-psy").innerText = name;
+            document.getElementById("sum-total").innerHTML = `${fmtMoney(price)} <span class="text-[10px] font-sans text-gray-400">COP</span>`;
+        }
+
+        // ─── CALENDARIO ──────────────────────────────────────────────────────
+        function getAvailableDows() {
+            if (psy && psy.schedule && Array.isArray(psy.schedule)) {
+                return psy.schedule.filter(s=>s.slots&&s.slots.length>0).map(s=>s.day); // 0=Lun
+            }
+            return [0,1,2,3,4]; // Lun-Vie por defecto
+        }
+
+        function renderCal() {
+            document.getElementById("cal-month").innerText = `${MONTHS[calMonth]} ${calYear}`;
+            const grid = document.getElementById("cal-days");
+            grid.innerHTML = "";
+            const first = new Date(calYear, calMonth, 1);
+            let dow = first.getDay(); dow = dow===0?6:dow-1;
+            const today = new Date(); today.setHours(0,0,0,0);
+            const total = new Date(calYear, calMonth+1, 0).getDate();
+            const avail = getAvailableDows();
+
+            for (let i=0;i<dow;i++) grid.appendChild(document.createElement("div"));
+
+            for (let d=1; d<=total; d++) {
+                const date = new Date(calYear,calMonth,d);
+                const wday = date.getDay()===0?6:date.getDay()-1;
+                const past = date < today;
+                const ok = avail.includes(wday) && !past;
+                const isSel = selDate && toISO(date)===toISO(selDate);
+                const btn = document.createElement("button");
+                btn.type="button"; btn.innerText=d;
+                if (isSel) {
+                    btn.className="py-2 rounded-xl bg-clubCrema text-clubVerde border border-clubCrema font-bold shadow-md text-xs font-mono";
+                } else if (ok) {
+                    btn.className="py-2 rounded-xl bg-white/5 hover:bg-white/15 text-white border border-white/5 text-xs font-mono transition-all";
+                    btn.onclick=()=>pickDate(date);
+                } else {
+                    btn.className="py-2 text-gray-700 text-xs font-mono cursor-not-allowed";
+                    btn.disabled=true;
+                }
+                grid.appendChild(btn);
+            }
+        }
+
+        async function pickDate(date) {
+            selDate=date; selTime=null;
+            document.getElementById("sum-date").innerText=fmtDate(date);
+            document.getElementById("date-label").innerText=fmtDate(date);
+            document.getElementById("sum-time").innerText="—";
+            document.getElementById("btn-to-payment").disabled=true;
+            renderCal();
+            await renderSlots(date);
+        }
+
+        // ─── HORARIOS ────────────────────────────────────────────────────────
+        async function renderSlots(date) {
+            const container = document.getElementById("time-slots");
+            container.innerHTML=`<p class="col-span-4 text-gray-500 text-sm italic">Cargando horarios...</p>`;
+
+            const dow = date.getDay()===0?6:date.getDay()-1;
+            let slots = ["09:00","10:00","11:00","14:00","15:00","16:00","17:00"];
+            if (psy.schedule && Array.isArray(psy.schedule)) {
+                const ds = psy.schedule.find(s=>s.day===dow);
+                if (ds && ds.slots) slots = ds.slots;
+            }
+
+            // traer slots ya ocupados
+            const dateStr = toISO(date);
+            const q = query(collection(db,"appointments"),
+                where("psychologistId","==",psy.id),
+                where("dateISO","==",dateStr),
+                where("status","in",["confirmada","pendiente"])
+            );
+            const snap = await getDocs(q);
+            const booked = snap.docs.map(d=>d.data().time);
+
+            container.innerHTML="";
+            if (!slots.length) {
+                container.innerHTML=`<p class="col-span-4 text-gray-500 text-sm">Sin horarios para este día.</p>`;
+                return;
+            }
+            slots.forEach(t=>{
+                const taken = booked.includes(t);
+                const btn = document.createElement("button");
+                btn.type="button"; btn.innerText=t;
+                if (taken) {
+                    btn.className="py-3 rounded-xl border border-white/5 bg-white/5 text-gray-600 line-through text-xs font-mono cursor-not-allowed";
+                    btn.disabled=true;
+                } else {
+                    btn.className="py-3 rounded-xl border border-white/10 bg-white/5 text-white hover:border-clubCrema hover:text-clubCrema text-xs font-mono transition-all";
+                    btn.onclick=()=>pickTime(btn,t);
+                }
+                container.appendChild(btn);
+            });
+        }
+
+        function pickTime(btn,t) {
+            selTime=t;
+            document.querySelectorAll("#time-slots button:not(:disabled)").forEach(b=>{
+                b.className="py-3 rounded-xl border border-white/10 bg-white/5 text-white hover:border-clubCrema hover:text-clubCrema text-xs font-mono transition-all";
+            });
+            btn.className="py-3 rounded-xl border border-clubCrema bg-clubVerdeMedio text-clubCrema shadow-inner text-xs font-mono";
+            document.getElementById("sum-time").innerText=t;
+            document.getElementById("btn-to-payment").disabled=false;
+        }
+
+        // ─── NAVEGACIÓN MESES ────────────────────────────────────────────────
+        document.getElementById("prev-month").onclick=()=>{ calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCal(); };
+        document.getElementById("next-month").onclick=()=>{ calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCal(); };
+
+        // ─── IR A PAGO ───────────────────────────────────────────────────────
+        document.getElementById("btn-to-payment").onclick=()=>{
+            document.getElementById("payment-section").classList.remove("hidden");
+            document.getElementById("btn-to-payment").classList.add("hidden");
+            document.getElementById("payment-section").scrollIntoView({behavior:"smooth"});
+            document.getElementById("progress-bar").style.width="66%";
+            document.getElementById("step3-icon").className="w-8 h-8 rounded-full bg-clubVerde border-2 border-clubCrema text-clubCrema flex items-center justify-center text-xs font-bold";
+            document.getElementById("step3-label").className="text-[10px] uppercase tracking-wider text-clubCrema font-bold";
+            injectWompi();
+        };
+
+        // ─── WOMPI ───────────────────────────────────────────────────────────
+        function injectWompi() {
+            // ⚠️ IMPORTANTE: reemplaza con tu llave pública de Wompi (https://comercios.wompi.co)
+            const WOMPI_KEY = "pub_test_XXXXXXXXXXXXXXXXXXXXXXXX";
+            const ref = `elclub-${Date.now()}-${user.uid.slice(0,8)}`;
+            const amountCents = (psy.price||80000)*100;
+            const redirectUrl = `${location.origin}/checkout-confirm.html?psyId=${psyId}&dateISO=${toISO(selDate)}&time=${encodeURIComponent(selTime)}&ref=${ref}`;
+
+            // Guardar datos en sessionStorage para checkout-confirm.html
+            sessionStorage.setItem("elclub_booking", JSON.stringify({
+                reference: ref,
+                psychologistId: psy.id,
+                psychologistName: fullName(psy),
+                dateISO: toISO(selDate),
+                dateLabel: fmtDate(selDate),
+                time: selTime,
+                amount: psy.price||80000,
+                patientId: user.uid,
+                patientName: `${profile.firstName||""} ${profile.lastName||""}`.trim()||user.email,
+                patientEmail: user.email,
+            }));
+
+            // Inyectar script de Wompi
+            const w = document.getElementById("wompi-widget");
+            w.innerHTML = "";
+            const script = document.createElement("script");
+            script.src = "https://checkout.wompi.co/widget.js";
+            script.setAttribute("data-render","button");
+            script.setAttribute("data-public-key", WOMPI_KEY);
+            script.setAttribute("data-currency","COP");
+            script.setAttribute("data-amount-in-cents", amountCents);
+            script.setAttribute("data-reference", ref);
+            script.setAttribute("data-redirect-url", redirectUrl);
+            w.appendChild(script);
+
+            // Ocultar botón alternativo cuando Wompi carga
+            setTimeout(()=>{ if(w.querySelector("button")) document.getElementById("btn-confirm").classList.add("hidden"); },2000);
+        }
+
+        // ─── BOTÓN ALTERNATIVO (mientras configuras Wompi) ───────────────────
+        // Este botón simula la confirmación para desarrollo/pruebas
+        document.getElementById("btn-confirm").onclick = async () => {
+            if (!user||!psy||!selDate||!selTime) return;
+            const btn = document.getElementById("btn-confirm");
+            btn.disabled=true; btn.innerText="Procesando...";
+            try {
+                const dateStr = toISO(selDate);
+                // Verificar doble reserva
+                const check = await getDocs(query(collection(db,"appointments"),
+                    where("psychologistId","==",psy.id),
+                    where("dateISO","==",dateStr),
+                    where("time","==",selTime),
+                    where("status","==","confirmada")
+                ));
+                if (!check.empty) { alert("Ese horario acaba de ser reservado. Elige otro."); btn.disabled=false; btn.innerText="Confirmar y Pagar →"; return; }
+
+                const method = document.querySelector("input[name='pmethod']:checked")?.value || "NEQUI";
+
+                // Generar link de Google Meet (formato estándar)
+                const meetCode = `elclub-${Math.random().toString(36).slice(2,8)}-${Math.random().toString(36).slice(2,6)}`;
+                const meetLink = `https://meet.google.com/${meetCode}`;
+
+                // Crear cita
+                const apptRef = await addDoc(collection(db,"appointments"),{
+                    patientId: user.uid,
+                    patientName: `${profile.firstName||""} ${profile.lastName||""}`.trim()||user.email,
+                    patientEmail: user.email,
+                    psychologistId: psy.id,
+                    psychologistName: fullName(psy),
+                    dateISO: dateStr,
+                    date: fmtDate(selDate),
+                    time: selTime,
+                    amount: psy.price||80000,
+                    currency: "COP",
+                    paymentMethod: method,
+                    paymentStatus: "pagado",
+                    status: "confirmada",
+                    modality: "Videollamada",
+                    meetLink,
+                    createdAt: new Date().toISOString()
+                });
+
+                // Asignar psicóloga fija al paciente (si no tiene una)
+                const patientRef = doc(db,"users",user.uid);
+                const patientSnap = await getDoc(patientRef);
+                const patientData = patientSnap.data()||{};
+                if (!patientData.assignedPsychologistId) {
+                    await updateDoc(patientRef, {
+                        assignedPsychologistId: psy.id,
+                        assignedPsychologistName: fullName(psy),
+                        assignedAt: new Date().toISOString()
+                    });
+                }
+
+                alert(`✅ ¡Reserva confirmada!\n\nFecha: ${fmtDate(selDate)}\nHora: ${selTime}\nGoogle Meet: ${meetLink}\n\nEncontrarás el enlace en tu panel.`);
+                location.href="dashboard-paciente.html";
+            } catch(e) {
+                console.error(e);
+                alert("Error al confirmar: "+e.message);
+                btn.disabled=false; btn.innerText="Confirmar y Pagar →";
+            }
+        };
+
+        // ─── AUTH ────────────────────────────────────────────────────────────
+        onAuthStateChanged(auth, async u=>{
+            if (!u) { location.href=`auth.html?next=${encodeURIComponent(location.href)}&tab=register`; return; }
+            user=u;
+            profile=await getUserProfile(u);
+            if (!profile||profile.role!=="paciente") {
+                alert("Solo los pacientes pueden reservar consultas.");
+                location.href=profile?"dashboard-psicologa.html":"auth.html";
+                return;
+            }
+            await loadPsy();
+            renderCal();
+        });
+    </script>
+</body>
+</html>

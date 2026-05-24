@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurar Agenda - El Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                colors: { clubVerde:'#084739', clubVerdeMedio:'#0f5445', clubCrema:'#eadac8', clubOscuro:'#1a1a1a', clubFondoCard:'#121212' },
+                fontFamily: { sans:['Plus Jakarta Sans','sans-serif'], serif:['Playfair Display','serif'] }
+            }}
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubOscuro text-white min-h-screen antialiased">
+
+    <header class="bg-clubVerde py-4 px-6 md:px-12 flex justify-between items-center shadow-lg">
+        <a href="dashboard-psicologa.html" class="text-xs font-semibold uppercase tracking-wider text-clubCrema hover:underline">← Volver al panel</a>
+        <div class="text-2xl font-serif font-bold text-clubCrema">El Club</div>
+        <div class="w-20"></div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 py-10 space-y-8">
+        <div>
+            <h1 class="text-2xl font-serif font-semibold text-clubCrema">Configura tu agenda</h1>
+            <p class="text-gray-400 text-sm mt-2">Define los días y horarios en que estás disponible. Los pacientes solo podrán reservar en estos espacios.</p>
+        </div>
+
+        <div id="schedule-builder" class="space-y-4"></div>
+
+        <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-6 space-y-4">
+            <h3 class="text-sm font-serif font-semibold text-clubCrema">Horarios personalizados</h3>
+            <p class="text-xs text-gray-400">Agrega horas específicas en formato <span class="font-mono text-white">HH:MM</span> (ej: 09:00, 14:30)</p>
+            <div id="custom-slots-wrapper" class="space-y-3"></div>
+            <button id="add-slot-btn" class="text-xs font-semibold text-clubCrema hover:underline">+ Agregar horario</button>
+        </div>
+
+        <button id="save-btn" class="w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl text-sm tracking-wide shadow-xl hover:bg-white transition-all">
+            Guardar disponibilidad
+        </button>
+        <p id="save-msg" class="hidden text-center text-emerald-400 text-sm">✅ Agenda guardada correctamente.</p>
+    </main>
+
+    <script type="module">
+        import { auth, db, onAuthStateChanged, getUserProfile, doc, updateDoc, getDoc } from "./firebase-config.js";
+
+        const DAYS = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+        // Horarios predeterminados por día (0=Lun)
+        const DEFAULT_SLOTS = ["09:00","10:00","11:00","14:00","15:00","16:00","17:00"];
+
+        let currentUser = null;
+        let schedule = DAYS.map((_,i)=>({ day:i, active: i<5, slots:[...DEFAULT_SLOTS] }));
+
+        function renderBuilder() {
+            const wrap = document.getElementById("schedule-builder");
+            wrap.innerHTML = "";
+            schedule.forEach((ds,i)=>{
+                const card = document.createElement("div");
+                card.className = `bg-clubFondoCard border rounded-2xl p-5 transition-all ${ds.active?"border-clubCrema/30":"border-white/5"}`;
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" class="day-toggle accent-clubCrema h-4 w-4" data-day="${i}" ${ds.active?"checked":""}>
+                            <span class="text-sm font-semibold ${ds.active?"text-white":"text-gray-500"}">${DAYS[i]}</span>
+                        </label>
+                        <span class="text-[10px] uppercase tracking-wider ${ds.active?"text-clubCrema":"text-gray-600"}">${ds.active?`${ds.slots.length} horarios`:"No disponible"}</span>
+                    </div>
+                    <div class="slots-grid flex flex-wrap gap-2 ${ds.active?"":"hidden"}">
+                        ${DEFAULT_SLOTS.map(s=>`
+                            <button type="button" data-day="${i}" data-slot="${s}" class="slot-btn text-[11px] font-mono px-3 py-1.5 rounded-lg border transition-all ${ds.slots.includes(s)?"bg-clubVerdeMedio border-clubCrema text-clubCrema":"bg-white/5 border-white/10 text-gray-400 hover:border-white/30"}">
+                                ${s}
+                            </button>
+                        `).join("")}
+                    </div>
+                `;
+                wrap.appendChild(card);
+            });
+
+            // eventos
+            wrap.querySelectorAll(".day-toggle").forEach(cb=>{
+                cb.addEventListener("change", e=>{
+                    const i = parseInt(e.target.dataset.day);
+                    schedule[i].active = e.target.checked;
+                    renderBuilder();
+                });
+            });
+            wrap.querySelectorAll(".slot-btn").forEach(btn=>{
+                btn.addEventListener("click", e=>{
+                    const i = parseInt(e.currentTarget.dataset.day);
+                    const s = e.currentTarget.dataset.slot;
+                    const idx = schedule[i].slots.indexOf(s);
+                    if (idx>=0) schedule[i].slots.splice(idx,1);
+                    else schedule[i].slots.push(s);
+                    renderBuilder();
+                });
+            });
+        }
+
+        // Horarios personalizados
+        document.getElementById("add-slot-btn").addEventListener("click",()=>{
+            const wrap = document.getElementById("custom-slots-wrapper");
+            const row = document.createElement("div");
+            row.className="flex items-center gap-3";
+            row.innerHTML=`
+                <select class="day-sel bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-clubCrema">
+                    ${DAYS.map((d,i)=>`<option value="${i}">${d}</option>`).join("")}
+                </select>
+                <input type="time" class="time-inp bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-clubCrema" value="09:00">
+                <button type="button" class="add-custom-btn bg-clubCrema text-clubVerde px-4 py-2 rounded-xl text-xs font-bold hover:bg-white transition-all">Agregar</button>
+                <button type="button" class="remove-row-btn text-gray-500 hover:text-red-400 text-xs">✕</button>
+            `;
+            row.querySelector(".add-custom-btn").addEventListener("click",()=>{
+                const day = parseInt(row.querySelector(".day-sel").value);
+                const time = row.querySelector(".time-inp").value;
+                if (time && !schedule[day].slots.includes(time)) {
+                    schedule[day].slots.push(time);
+                    schedule[day].slots.sort();
+                    schedule[day].active = true;
+                    renderBuilder();
+                }
+            });
+            row.querySelector(".remove-row-btn").addEventListener("click",()=>row.remove());
+            wrap.appendChild(row);
+        });
+
+        // Guardar
+        document.getElementById("save-btn").addEventListener("click", async ()=>{
+            if (!currentUser) return;
+            const btn = document.getElementById("save-btn");
+            btn.disabled=true; btn.innerText="Guardando...";
+            try {
+                await updateDoc(doc(db,"users",currentUser.uid),{
+                    schedule: schedule.filter(s=>s.active),
+                    scheduleUpdatedAt: new Date().toISOString()
+                });
+                document.getElementById("save-msg").classList.remove("hidden");
+                setTimeout(()=>document.getElementById("save-msg").classList.add("hidden"),3000);
+            } catch(e) {
+                alert("Error al guardar: "+e.message);
+            } finally {
+                btn.disabled=false; btn.innerText="Guardar disponibilidad";
+            }
+        });
+
+        // Auth + cargar agenda existente
+        onAuthStateChanged(auth, async u=>{
+            if (!u) { location.href="auth.html"; return; }
+            currentUser=u;
+            const profile = await getUserProfile(u);
+            if (!profile||profile.role!=="psicologa") { location.href="auth.html"; return; }
+
+            if (profile.schedule && Array.isArray(profile.schedule) && profile.schedule.length>0) {
+                // Reconstruir desde Firestore
+                schedule = DAYS.map((_,i)=>{
+                    const saved = profile.schedule.find(s=>s.day===i);
+                    return saved ? { day:i, active:true, slots:saved.slots } : { day:i, active:false, slots:[...DEFAULT_SLOTS] };
+                });
+            }
+            renderBuilder();
+        });
+    </script>
+</body>
+</html>

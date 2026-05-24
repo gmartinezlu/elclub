@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Club - Acceso y Registro</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clubVerde: '#084739',       /* Verde Principal */
+                        clubCrema: '#eadac8',       /* Crema / Arena */
+                        clubOscuro: '#1a1a1a',      /* Fondo Contenedor */
+                        clubFondo: '#121212'        /* Fondo General de la Página */
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubFondo text-white min-h-screen flex flex-col justify-between antialiased selection:bg-clubCrema selection:text-clubVerde">
+
+    <header class="w-full bg-clubVerde py-4 px-6 md:px-12 flex justify-between items-center shadow-lg">
+        <a href="index.html" class="text-2xl font-serif font-bold tracking-wide text-clubCrema hover:opacity-90 transition-opacity">
+            El Club
+        </a>
+        <a href="index.html" class="text-xs font-semibold uppercase tracking-wider text-clubCrema hover:underline">
+            ← Volver al inicio
+        </a>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md bg-clubOscuro rounded-2xl shadow-2xl border border-white/5 overflow-hidden transform transition-all">
+            
+            <div class="bg-clubVerde py-5 text-center border-b border-white/10">
+                <h2 class="text-xl font-serif text-clubCrema font-semibold tracking-wide">Bienvenido a El Club</h2>
+            </div>
+
+            <div class="flex border-b border-white/10 text-sm font-semibold tracking-wide text-gray-400">
+                <button id="tab-login" onclick="switchTab('login')" class="w-1/2 py-4 text-center border-b-2 border-clubCrema text-clubCrema transition-all duration-300">
+                    Iniciar sesión
+                </button>
+                <button id="tab-register" onclick="switchTab('register')" class="w-1/2 py-4 text-center border-b-2 border-transparent hover:text-gray-200 transition-all duration-300">
+                    Registrarse
+                </button>
+            </div>
+
+            <div class="p-8">
+                
+                <form id="form-login" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Correo electrónico</label>
+                        <input type="email" required placeholder="tu@correo.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema">Contraseña</label>
+                            <button type="button" id="btn-reset-password" class="text-xs text-gray-400 hover:text-clubCrema transition-colors">¿Olvidaste tu contraseña?</button>
+                        </div>
+                        <input type="password" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl shadow-lg hover:bg-white transition-all text-sm tracking-wide mt-2">
+                        Entrar a El Club
+                    </button>
+
+                    <div class="relative flex py-2 items-center">
+                        <div class="flex-grow border-t border-white/10"></div>
+                        <span class="flex-shrink mx-4 text-xs font-semibold uppercase tracking-widest text-gray-500">o continúa con</span>
+                        <div class="flex-grow border-t border-white/10"></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <button type="button" class="border border-white/10 bg-white/5 rounded-xl py-3 text-xs font-semibold hover:bg-white/10 transition-colors flex items-center justify-center gap-2">
+                            <span>Google</span>
+                        </button>
+                        <button type="button" class="border border-white/10 bg-white/5 rounded-xl py-3 text-xs font-semibold hover:bg-white/10 transition-colors flex items-center justify-center gap-2">
+                            <span>Facebook</span>
+                        </button>
+                    </div>
+                </form>
+
+                <form id="form-register" class="space-y-5 hidden">
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <h3 class="text-sm font-bold text-clubCrema">Registro para pacientes</h3>
+                        <p class="text-[11px] text-gray-400 mt-1 leading-relaxed">Crea tu cuenta para reservar sesiones, ver tus citas y gestionar tu proceso.</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Nombre</label>
+                            <input type="text" required placeholder="Tu nombre" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Apellido</label>
+                            <input type="text" required placeholder="Tu apellido" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Correo electrónico</label>
+                        <input type="email" required placeholder="tu@correo.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Contraseña</label>
+                        <input type="password" required placeholder="Mínimo 8 caracteres" minlength="8" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
+                    </div>
+
+                    <button type="submit" class="w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl shadow-lg hover:bg-white transition-all text-sm tracking-wide mt-2">
+                        Crear cuenta de paciente
+                    </button>
+
+                    <p class="text-center text-xs text-gray-400 leading-relaxed">
+                        ¿Eres psicóloga? <a href="login-psicologa.html" class="text-clubCrema font-semibold hover:underline">Entra al portal profesional</a>
+                    </p>
+                </form>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-clubOscuro/50 border-t border-white/5 py-6 text-center text-[11px] text-gray-500 font-semibold tracking-wide">
+        © 2026 El Club by Mile Moya · Conexión segura integrada. · <a href="login-admin.html" class="text-clubCrema hover:underline">Admin</a>
+    </footer>
+
+    <script type="module">
+        // Importación de configuración y métodos de Firebase
+        import {
+            auth,
+            db,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            sendPasswordResetEmail,
+            doc,
+            setDoc,
+            getUserProfile,
+            getRoleDestination
+        } from "./firebase-config.js";
+
+        const params = new URLSearchParams(window.location.search);
+        const nextUrl = params.get("next");
+
+        if (params.get("tab") === "register") {
+            window.addEventListener("DOMContentLoaded", () => window.switchTab("register"));
+        }
+
+        function goAfterLogin(profile) {
+            if (nextUrl && profile.role === "paciente") {
+                window.location.href = nextUrl;
+                return;
+            }
+
+            window.location.href = getRoleDestination(profile.role);
+        }
+
+        // Función para cambiar entre pestañas Login y Registro
+        window.switchTab = function(tab) {
+            const loginForm = document.getElementById('form-login');
+            const registerForm = document.getElementById('form-register');
+            const loginTab = document.getElementById('tab-login');
+            const registerTab = document.getElementById('tab-register');
+
+            if(tab === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                loginTab.className = "w-1/2 py-4 text-center border-b-2 border-clubCrema text-clubCrema transition-all duration-300";
+                registerTab.className = "w-1/2 py-4 text-center border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all duration-300";
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+                loginTab.className = "w-1/2 py-4 text-center border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all duration-300";
+                registerTab.className = "w-1/2 py-4 text-center border-b-2 border-clubCrema text-clubCrema transition-all duration-300";
+            }
+        }
+
+        // --- Manejo del envío del Formulario de Registro con Firebase ---
+        document.getElementById('form-register').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const inputs = e.target.querySelectorAll('input');
+            const name = inputs[0].value;
+            const lastname = inputs[1].value;
+            const email = inputs[2].value;
+            const password = inputs[3].value;
+
+            try {
+                // Registrar en Authentication
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Almacenar metadatos y Rol en la colección "users" de Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    firstName: name,
+                    lastName: lastname,
+                    email: email,
+                    role: "paciente",
+                    rol: "paciente",
+                    createdAt: new Date().toISOString()
+                });
+
+                alert("¡Cuenta creada con éxito!");
+                goAfterLogin({ role: "paciente" });
+
+            } catch (error) {
+                console.error("Error en el registro:", error);
+                alert("Error al crear la cuenta: " + error.message);
+            }
+        });
+
+        // --- Manejo del envío del Formulario de Inicio de Sesión con Firebase ---
+        document.getElementById('form-login').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const inputs = e.target.querySelectorAll('input');
+            const email = inputs[0].value;
+            const password = inputs[1].value;
+
+            try {
+                // Autenticar con Firebase
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const profile = await getUserProfile(userCredential.user);
+
+                if (!profile) {
+                    alert("Tu usuario existe, pero falta el perfil en la base de datos. Contacta a administración.");
+                    return;
+                }
+
+                alert("Sesión iniciada correctamente.");
+                goAfterLogin(profile);
+            } catch (error) {
+                console.error("Error al iniciar sesión:", error);
+                alert("Credenciales inválidas o error de conexión.");
+            }
+        });
+
+        document.getElementById('btn-reset-password').addEventListener('click', async () => {
+            const email = document.querySelector('#form-login input[type="email"]').value.trim();
+            if (!email) {
+                alert("Escribe tu correo electrónico para enviarte la recuperación.");
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("Te enviamos un correo para restablecer tu contraseña.");
+            } catch (error) {
+                console.error("Error al enviar recuperación:", error);
+                alert("No pudimos enviar el correo. Revisa el email e intenta de nuevo.");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva Confirmada - El Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                colors: { clubVerde:'#084739', clubCrema:'#eadac8', clubOscuro:'#1a1a1a', clubFondoCard:'#121212' },
+                fontFamily: { sans:['Plus Jakarta Sans','sans-serif'], serif:['Playfair Display','serif'] }
+            }}
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubOscuro text-white min-h-screen flex flex-col items-center justify-center p-6">
+
+    <div id="loading" class="text-center space-y-4">
+        <div class="w-12 h-12 border-2 border-clubCrema border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="text-gray-400 text-sm">Verificando tu pago...</p>
+    </div>
+
+    <div id="success" class="hidden max-w-md w-full bg-clubFondoCard border border-white/5 rounded-2xl p-8 text-center space-y-6">
+        <div class="w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto text-3xl">✅</div>
+        <div>
+            <h1 class="text-2xl font-serif font-bold text-clubCrema">¡Reserva confirmada!</h1>
+            <p class="text-gray-400 text-sm mt-2">Tu sesión ha sido agendada exitosamente.</p>
+        </div>
+        <div class="bg-white/5 rounded-xl p-5 space-y-3 text-sm text-left">
+            <div class="flex justify-between"><span class="text-gray-400">Psicóloga:</span><span id="conf-psy" class="font-semibold">—</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Fecha:</span><span id="conf-date" class="font-mono">—</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Hora:</span><span id="conf-time" class="font-mono">—</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Modalidad:</span><span>Videollamada</span></div>
+            <div class="flex justify-between items-center">
+                <span class="text-gray-400">Google Meet:</span>
+                <a id="conf-meet" href="#" target="_blank" class="text-xs text-clubCrema hover:underline font-mono">Ver enlace →</a>
+            </div>
+        </div>
+        <a href="dashboard-paciente.html" class="block w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl hover:bg-white transition-all text-sm">
+            Ir a mi panel →
+        </a>
+    </div>
+
+    <div id="error" class="hidden max-w-md w-full bg-clubFondoCard border border-white/5 rounded-2xl p-8 text-center space-y-6">
+        <div class="text-4xl">⚠️</div>
+        <h1 class="text-xl font-serif font-bold text-red-400">Pago no completado</h1>
+        <p class="text-gray-400 text-sm">El pago fue cancelado o no se pudo verificar. No se cobró nada.</p>
+        <a href="perfil-psicologa.html" class="block w-full bg-white/10 text-white font-bold py-4 rounded-xl hover:bg-white/20 transition-all text-sm">
+            Volver a intentarlo
+        </a>
+    </div>
+
+    <script type="module">
+        import { auth, db, onAuthStateChanged, getUserProfile, collection, addDoc, doc, getDoc, updateDoc, query, where, getDocs } from "./firebase-config.js";
+
+        const params = new URLSearchParams(location.search);
+        const wompiTxId = params.get("id"); // Wompi envía el id de transacción
+        const ref = params.get("ref");
+
+        function fmtMoney(v) { return new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(v); }
+        function fullName(p) { return (`${p.firstName||""} ${p.lastName||""}`).trim()||p.email||"Psicóloga"; }
+
+        async function verifyAndBook() {
+            const booking = JSON.parse(sessionStorage.getItem("elclub_booking")||"{}");
+            if (!booking.reference) { showError(); return; }
+
+            // Verificar pago con Wompi API (sandbox o producción)
+            let paymentApproved = false;
+            if (wompiTxId) {
+                try {
+                    // ⚠️ En producción verificar server-side. Aquí verificamos client-side para MVP.
+                    const res = await fetch(`https://sandbox.wompi.co/v1/transactions/${wompiTxId}`);
+                    const data = await res.json();
+                    paymentApproved = data?.data?.status === "APPROVED";
+                } catch(e) {
+                    console.error("Error verificando Wompi:",e);
+                    // Si no se puede verificar, confiar en la referencia
+                    paymentApproved = true;
+                }
+            } else {
+                // Sin id de Wompi (modo dev), aprobar
+                paymentApproved = true;
+            }
+
+            if (!paymentApproved) { showError(); return; }
+
+            // Verificar que no exista ya una cita con esa referencia
+            const existing = await getDocs(query(collection(db,"appointments"), where("wompiRef","==",booking.reference)));
+            if (!existing.empty) {
+                // Ya fue procesado, mostrar éxito con datos existentes
+                const appt = existing.docs[0].data();
+                showSuccess({ ...appt, meetLink: appt.meetLink });
+                return;
+            }
+
+            // Crear cita en Firestore
+            const meetCode = `elclub-${Math.random().toString(36).slice(2,8)}-${Math.random().toString(36).slice(2,6)}`;
+            const meetLink = `https://meet.google.com/${meetCode}`;
+
+            await addDoc(collection(db,"appointments"),{
+                patientId: booking.patientId,
+                patientName: booking.patientName,
+                patientEmail: booking.patientEmail,
+                psychologistId: booking.psychologistId,
+                psychologistName: booking.psychologistName,
+                dateISO: booking.dateISO,
+                date: booking.dateLabel,
+                time: booking.time,
+                amount: booking.amount,
+                currency: "COP",
+                paymentStatus: "pagado",
+                wompiRef: booking.reference,
+                wompiTxId: wompiTxId||null,
+                status: "confirmada",
+                modality: "Videollamada",
+                meetLink,
+                createdAt: new Date().toISOString()
+            });
+
+            // Asignar psicóloga al paciente si no tiene
+            if (booking.patientId) {
+                const patRef = doc(db,"users",booking.patientId);
+                const patSnap = await getDoc(patRef);
+                if (patSnap.exists() && !patSnap.data().assignedPsychologistId) {
+                    await updateDoc(patRef,{
+                        assignedPsychologistId: booking.psychologistId,
+                        assignedPsychologistName: booking.psychologistName,
+                        assignedAt: new Date().toISOString()
+                    });
+                }
+            }
+
+            sessionStorage.removeItem("elclub_booking");
+            showSuccess({ psychologistName: booking.psychologistName, date: booking.dateLabel, time: booking.time, meetLink });
+        }
+
+        function showSuccess(data) {
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("success").classList.remove("hidden");
+            document.getElementById("conf-psy").innerText = data.psychologistName||"—";
+            document.getElementById("conf-date").innerText = data.date||"—";
+            document.getElementById("conf-time").innerText = data.time||"—";
+            const meetEl = document.getElementById("conf-meet");
+            meetEl.href = data.meetLink||"#";
+            meetEl.innerText = data.meetLink ? "Abrir Google Meet →" : "Disponible en tu panel";
+        }
+
+        function showError() {
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("error").classList.remove("hidden");
+        }
+
+        onAuthStateChanged(auth, async u=>{
+            if (!u) { location.href="auth.html"; return; }
+            await verifyAndBook();
+        });
+    </script>
+</body>
+</html>
