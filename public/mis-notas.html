@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Notas - El Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                colors: { clubVerde:'#084739', clubVerdeMedio:'#0f5445', clubCrema:'#eadac8', clubOscuro:'#1a1a1a', clubFondoCard:'#121212' },
+                fontFamily: { sans:['Plus Jakarta Sans','sans-serif'], serif:['Playfair Display','serif'] }
+            }}
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubOscuro text-white min-h-screen md:flex antialiased">
+
+    <aside class="w-full md:w-64 bg-clubVerde text-white flex flex-col justify-between p-6 border-r border-white/5 shrink-0">
+        <div>
+            <div class="text-2xl font-serif font-bold text-clubCrema mb-8">El Club</div>
+            <div class="bg-clubVerdeMedio rounded-xl p-4 flex items-center gap-3 border border-white/10 mb-8">
+                <div class="w-11 h-11 bg-clubCrema text-clubVerde rounded-full flex items-center justify-center text-sm font-bold overflow-hidden">
+                    <span id="user-initials">US</span>
+                    <img id="user-photo" class="hidden w-full h-full object-cover rounded-full" src="" alt="">
+                </div>
+                <div>
+                    <h4 id="patient-name" class="text-sm font-bold text-white">Paciente</h4>
+                    <p class="text-[10px] uppercase tracking-wider text-clubCrema/80">Paciente</p>
+                </div>
+            </div>
+            <nav class="space-y-1.5 text-sm font-medium">
+                <a href="dashboard-paciente.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>🏠</span> Inicio</a>
+                <a href="mis-citas.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>📅</span> Mis citas</a>
+                <a href="mis-notas.html" class="flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl shadow-md"><span>📓</span> Mis notas</a>
+                <a href="perfil-psicologa.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>🔍</span> Buscar psicóloga</a>
+                <a href="mis pagos.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>💳</span> Pagos</a>
+                <a href="mi perfol paciente.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>👤</span> Mi perfil</a>
+            </nav>
+        </div>
+        <button id="btn-logout" class="w-full flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-clubCrema/60 hover:text-white px-4 py-3 transition-colors mt-8 pt-4 border-t border-white/10">
+            <span>🚪</span> Cerrar sesión
+        </button>
+    </aside>
+
+    <main class="flex-grow p-6 md:p-10 space-y-8 overflow-y-auto">
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-serif font-semibold">Mis Notas 📓</h1>
+                <p class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Tu diario de proceso personal</p>
+            </div>
+            <button id="btn-nueva-nota" class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-5 py-3.5 rounded-full shadow-lg hover:bg-white transition-all">
+                + Nueva nota
+            </button>
+        </header>
+
+        <!-- Formulario nueva nota (oculto por defecto) -->
+        <div id="form-nota" class="hidden bg-clubFondoCard border border-clubCrema/30 rounded-2xl p-6 space-y-4">
+            <h3 class="text-sm font-serif font-semibold text-clubCrema">Nueva nota</h3>
+            <div>
+                <label class="text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2 block">Título</label>
+                <input id="nota-titulo" type="text" placeholder="¿Sobre qué quieres escribir?" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-clubCrema">
+            </div>
+            <div>
+                <label class="text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2 block">Contenido</label>
+                <textarea id="nota-contenido" rows="5" placeholder="Escribe libremente lo que sientes, lo que aprendiste, lo que quieres recordar..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-clubCrema resize-none"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button id="btn-guardar-nota" class="bg-clubCrema text-clubVerde font-bold text-xs px-6 py-3 rounded-xl hover:bg-white transition-all">Guardar nota</button>
+                <button id="btn-cancelar-nota" class="bg-white/5 border border-white/10 text-gray-300 text-xs px-6 py-3 rounded-xl hover:bg-white/10 transition-all">Cancelar</button>
+            </div>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-6 space-y-4">
+                <h3 class="text-base font-serif font-semibold text-clubCrema border-b border-white/5 pb-3">Tareas de mi psicologa</h3>
+                <div id="tareas-container" class="space-y-2"><p class="text-gray-500 text-sm italic">Cargando tareas...</p></div>
+            </div>
+            <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-6 space-y-4">
+                <h3 class="text-base font-serif font-semibold text-clubCrema border-b border-white/5 pb-3">Recursos compartidos</h3>
+                <div id="recursos-container" class="divide-y divide-white/5"><p class="text-gray-500 text-sm italic">Cargando recursos...</p></div>
+            </div>
+        </section>
+
+        <!-- Lista de notas -->
+        <div id="notas-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            <p class="text-gray-500 text-sm italic col-span-3">Cargando notas...</p>
+        </div>
+    </main>
+
+    <script type="module">
+        import { checkAuth, auth, signOut, db, collection, query, where, onSnapshot, addDoc, updateDoc, deleteDoc, getUserProfile, doc } from "./firebase-config.js";
+        import { loadProfilePhoto } from "./profile-photo.js";
+
+        checkAuth("paciente");
+
+        let editingId = null;
+
+        document.getElementById("btn-nueva-nota").addEventListener("click", () => {
+            editingId = null;
+            document.getElementById("nota-titulo").value = "";
+            document.getElementById("nota-contenido").value = "";
+            document.getElementById("form-nota").classList.remove("hidden");
+            document.getElementById("nota-titulo").focus();
+        });
+
+        document.getElementById("btn-cancelar-nota").addEventListener("click", () => {
+            document.getElementById("form-nota").classList.add("hidden");
+            editingId = null;
+        });
+
+        document.getElementById("btn-guardar-nota").addEventListener("click", async () => {
+            const titulo = document.getElementById("nota-titulo").value.trim();
+            const contenido = document.getElementById("nota-contenido").value.trim();
+            if (!titulo || !contenido) { alert("Completa el título y el contenido."); return; }
+
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const btn = document.getElementById("btn-guardar-nota");
+            btn.disabled = true; btn.innerText = "Guardando...";
+
+            try {
+                if (editingId) {
+                    await updateDoc(doc(db,"notes",editingId), { titulo, contenido, updatedAt: new Date().toISOString() });
+                } else {
+                    await addDoc(collection(db,"notes"), {
+                        patientId: user.uid,
+                        titulo, contenido,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    });
+                }
+                document.getElementById("form-nota").classList.add("hidden");
+                editingId = null;
+            } catch(e) {
+                alert("Error al guardar: " + e.message);
+            } finally {
+                btn.disabled = false; btn.innerText = "Guardar nota";
+            }
+        });
+
+        auth.onAuthStateChanged(async user => {
+            if (!user) return;
+            const profile = await getUserProfile(user);
+            const name = profile ? `${profile.firstName||""} ${profile.lastName||""}`.trim() : user.email;
+            document.getElementById("patient-name").innerText = name;
+            document.getElementById("user-initials").innerText = name.split(" ").slice(0,2).map(w=>w[0]).join("").toUpperCase() || "US";
+            if (profile?.photoURL) loadProfilePhoto(profile.photoURL, { avatarId:"user-photo", initialsId:"user-initials" });
+            loadAssignedTasks(user.uid);
+            loadAssignedResources(user.uid);
+
+            const q = query(collection(db,"notes"), where("patientId","==",user.uid));
+            onSnapshot(q, snap => {
+                const container = document.getElementById("notas-container");
+                const notas = snap.docs.map(d=>({id:d.id,...d.data()}))
+                    .sort((a,b) => (b.updatedAt||"").localeCompare(a.updatedAt||""));
+
+                if (!notas.length) {
+                    container.innerHTML = `<div class="col-span-3 bg-clubFondoCard border border-white/5 rounded-2xl p-8 text-center">
+                        <p class="text-gray-400 text-sm">Aún no tienes notas. ¡Escribe algo hoy!</p>
+                    </div>`;
+                    return;
+                }
+
+                container.innerHTML = notas.map(n => `
+                    <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-5 space-y-3 hover:border-white/10 transition-colors flex flex-col">
+                        <div class="flex justify-between items-start gap-2">
+                            <h4 class="text-sm font-bold text-white leading-tight">${n.titulo}</h4>
+                            <div class="flex gap-2 shrink-0">
+                                <button data-id="${n.id}" data-titulo="${encodeURIComponent(n.titulo)}" data-contenido="${encodeURIComponent(n.contenido)}" class="btn-editar text-[10px] text-clubCrema hover:underline font-semibold">Editar</button>
+                                <button data-id="${n.id}" class="btn-eliminar text-[10px] text-red-400 hover:underline font-semibold">Eliminar</button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed flex-grow">${n.contenido.length > 200 ? n.contenido.slice(0,200)+"..." : n.contenido}</p>
+                        <p class="text-[10px] text-gray-600 font-mono">${new Date(n.updatedAt||n.createdAt).toLocaleDateString("es-CO",{day:"numeric",month:"short",year:"numeric"})}</p>
+                    </div>
+                `).join("");
+
+                // Editar
+                document.querySelectorAll(".btn-editar").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        editingId = btn.dataset.id;
+                        document.getElementById("nota-titulo").value = decodeURIComponent(btn.dataset.titulo);
+                        document.getElementById("nota-contenido").value = decodeURIComponent(btn.dataset.contenido);
+                        document.getElementById("form-nota").classList.remove("hidden");
+                        document.getElementById("form-nota").scrollIntoView({behavior:"smooth"});
+                    });
+                });
+
+                // Eliminar
+                document.querySelectorAll(".btn-eliminar").forEach(btn => {
+                    btn.addEventListener("click", async () => {
+                        if (!confirm("¿Eliminar esta nota?")) return;
+                        await deleteDoc(doc(db,"notes",btn.dataset.id));
+                    });
+                });
+            });
+        });
+
+        document.getElementById("btn-logout").addEventListener("click", async () => {
+            if (confirm("¿Cerrar sesión?")) { await signOut(auth); location.href="auth.html"; }
+        });
+    </script>
+</body>
+</html>
