@@ -10,17 +10,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        clubVerde: '#084739',       /* Fondo Sidebar fijo */
-                        clubVerdeMedio: '#0f5445',  /* Destacados activos */
-                        clubCrema: '#eadac8',       /* Detalles y textos premium */
-                        clubOscuro: '#1a1a1a',      /* Fondo del panel de contenido */
-                        clubFondo: '#121212'        /* Contenedores de tarjetas secundarias */
+                        clubVerde: '#084739',       
+                        clubVerdeMedio: '#0f5445',  
+                        clubCrema: '#eadac8',       
+                        clubOscuro: '#1a1a1a',      
+                        clubFondo: '#121212'        
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -30,47 +31,49 @@
             }
         }
     </script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
 </head>
 <body class="font-sans bg-clubOscuro text-white min-h-screen md:flex antialiased">
 
+    <!-- SIDEBAR -->
     <aside class="w-full md:w-64 bg-clubVerde text-white flex flex-col justify-between p-6 border-r border-white/5 shrink-0">
         <div>
             <div class="text-2xl font-serif font-bold tracking-wide text-clubCrema mb-8 text-center md:text-left">
                 El Club
             </div>
             
-            <div class="bg-clubVerdeMedio rounded-xl p-4 flex items-center gap-3 border border-white/10 mb-8">
-                <div class="w-11 h-11 bg-clubCrema text-clubVerde rounded-full flex items-center justify-center text-sm font-bold shadow-inner">
-                    AM
+            <!-- Perfil Profesional -->
+            <div class="bg-clubVerdeMedio rounded-xl p-4 flex items-center gap-3 border border-white/10 mb-8 relative group">
+                <div class="relative w-12 h-12 shrink-0">
+                    <img id="psychologist-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=150&auto=format&fit=crop" alt="Foto de perfil" class="w-full h-full object-cover rounded-full border border-clubCrema/40">
+                    <label for="upload-avatar" class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center text-[10px] text-clubCrema font-bold opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+                        CAMBIAR
+                    </label>
+                    <input type="file" id="upload-avatar" accept="image/*" class="hidden">
                 </div>
-                <div>
-                    <h4 id="psychologist-name" class="text-sm font-bold tracking-wide text-white">Ana Martínez</h4>
+                <div class="overflow-hidden">
+                    <h4 id="psychologist-name" class="text-sm font-bold tracking-wide text-white truncate">Cargando...</h4>
                     <p class="text-[10px] uppercase tracking-wider text-clubCrema/80 font-medium">Psicóloga</p>
                 </div>
             </div>
 
-            <nav class="space-y-1.5 text-sm font-medium">
-                <a href="#" class="flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl transition-all shadow-md">
+            <!-- Navegación por Tabs -->
+            <nav id="sidebar-nav" class="space-y-1.5 text-sm font-medium">
+                <button data-tab="tab-inicio" class="w-full flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl transition-all shadow-md tab-btn">
                     <span>🏠</span> Inicio
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">📅</span> Agenda
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">👥</span> Mis pacientes
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">📝</span> Notas clínicas
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">💰</span> Ingresos
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">👤</span> Mi perfil
-                </a>
-                <a href="#" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all group">
-                    <span class="opacity-70 group-hover:opacity-100">⚙️</span> Configuración
-                </a>
+                </button>
+                <button data-tab="tab-agenda" class="w-full flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all tab-btn">
+                    <span>📅</span> Agenda y Google
+                </button>
+                <button data-tab="tab-pacientes" class="w-full flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all tab-btn">
+                    <span>👥</span> Mis Pacientes Activos
+                </button>
+                <button data-tab="tab-chat" class="w-full flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all tab-btn">
+                    <span>💬</span> Centro de Mensajes
+                </button>
             </nav>
         </div>
 
@@ -81,11 +84,12 @@
         </div>
     </aside>
 
+    <!-- CONTENEDOR PRINCIPAL -->
     <main class="flex-grow p-6 md:p-10 space-y-8 overflow-y-auto">
         
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6">
             <div>
-                <h1 id="psychologist-greeting" class="text-2xl md:text-3xl font-serif font-semibold tracking-wide">Hola, Ana 👋</h1>
+                <h1 id="psychologist-greeting" class="text-2xl md:text-3xl font-serif font-semibold tracking-wide">Hola... 👋</h1>
                 <p id="current-date" class="text-xs text-gray-400 mt-1 font-medium uppercase tracking-wider"></p>
             </div>
             <button class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-5 py-3.5 rounded-full shadow-lg hover:bg-white transition-all">
@@ -93,140 +97,732 @@
             </button>
         </header>
 
+        <!-- BANNER DE REVISIÓN (CÓDIGO ORIGINAL RECUPERADO) -->
         <section id="professional-status-banner" class="hidden bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5">
             <p class="text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-2">Perfil en revisión</p>
             <h2 class="text-lg font-serif font-semibold text-clubCrema">Tu postulación profesional está pendiente de aprobación.</h2>
             <p class="text-sm text-gray-300 mt-2 leading-relaxed">Puedes entrar a tu panel, pero tu perfil no aparecerá en el catálogo de pacientes hasta que administración lo revise y lo marque como disponible.</p>
         </section>
 
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Citas hoy</p>
-                <h3 id="today-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">0</h3>
-            </div>
-            <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Pacientes activos</p>
-                <h3 id="active-patients-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">0</h3>
-            </div>
-            <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Ingresos del mes</p>
-                <h3 id="month-income" class="text-2xl font-bold font-mono mt-2 text-clubCrema">$0 <span class="text-[10px] text-gray-500 font-sans font-normal">COP</span></h3>
-            </div>
-            <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Calificación</p>
-                <h3 class="text-2xl font-bold font-mono mt-2 text-yellow-400">4.9 ★</h3>
-            </div>
-        </section>
+        <!-- ================= TAB: INICIO ================= -->
+        <div id="tab-inicio" class="tab-content active space-y-8">
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Citas hoy</p>
+                    <h3 id="today-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">0</h3>
+                </div>
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Pacientes activos</p>
+                    <h3 id="active-patients-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">0</h3>
+                </div>
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Ingresos del mes</p>
+                    <h3 id="month-income" class="text-2xl font-bold font-mono mt-2 text-clubCrema">$0 <span class="text-[10px] text-gray-500 font-sans font-normal">COP</span></h3>
+                </div>
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Calificación</p>
+                    <h3 class="text-2xl font-bold font-mono mt-2 text-yellow-400">4.9 ★</h3>
+                </div>
+            </section>
 
-        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <div class="lg:col-span-7 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
-                <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Citas de hoy</h3>
-                
-                <div id="psychologist-appointments" class="space-y-3">
-                    <p class="text-gray-500 text-sm italic">Cargando agenda...</p>
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Citas de hoy -->
+                <div class="lg:col-span-7 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
+                    <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Citas de hoy</h3>
+                    <div id="psychologist-appointments" class="space-y-3">
+                        <p class="text-gray-500 text-sm italic">Cargando agenda...</p>
+                    </div>
+                </div>
+
+                <!-- Pacientes Recientes -->
+                <div class="lg:col-span-5 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
+                    <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Pacientes recientes</h3>
+                    <div id="recent-patients" class="divide-y divide-white/5">
+                        <p class="text-gray-500 text-sm italic">Cargando pacientes...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= TAB: AGENDA & INTEGRACIONES ================= -->
+        <div id="tab-agenda" class="tab-content space-y-6">
+            <div class="bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-6">
+                <div>
+                    <h2 class="text-xl font-serif font-semibold text-clubCrema">Integraciones de Google Workspace</h2>
+                    <p class="text-xs text-gray-400 mt-1">Conecta tus herramientas para automatizar enlaces de Meet y sincronizar calendarios.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 bg-blue-500 rounded-full"></span> Google Meet
+                            </h3>
+                            <p class="text-xs text-gray-400 mt-1">Sincroniza tu cuenta para inyectar enlaces automáticos en las consultas.</p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between">
+                            <span id="meet-status" class="text-xs text-gray-400 font-medium">Verificando...</span>
+                            <button id="btn-connect-meet" class="text-xs bg-clubCrema text-clubVerde font-bold px-3 py-1.5 rounded-lg hover:bg-white transition-all">Configurar Enlace</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span> Google Calendar
+                            </h3>
+                            <p class="text-xs text-gray-400 mt-1">Sincroniza tus citas de El Club con tu calendario laboral externo.</p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between">
+                            <span id="calendar-status" class="text-xs text-gray-400 font-medium">No vinculado</span>
+                            <button id="btn-connect-calendar" class="text-xs bg-white/5 border border-white/10 text-white px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Vincular Calendar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestor de Disponibilidad y Horarios -->
+                <div class="border-t border-white/5 pt-6 space-y-4">
+                    <div>
+                        <h3 class="text-base font-serif font-semibold text-clubCrema">Configuración Horaria de Sesiones</h3>
+                        <p class="text-xs text-gray-400">Las sesiones se calculan estrictamente sobre bloques fijos de 60 minutos con un mínimo de 15 minutos de descanso.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Duración de Consulta</label>
+                            <input type="text" value="60 minutos" disabled class="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-sm font-mono text-clubCrema text-center font-bold">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Descanso Obligatorio</label>
+                            <input type="text" value="15 minutos (Mínimo)" disabled class="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-sm font-mono text-emerald-400 text-center font-bold">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Intervalo Total por Bloque</label>
+                            <input type="text" value="75 minutos" disabled class="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-sm font-mono text-gray-300 text-center">
+                        </div>
+                    </div>
+
+                    <form id="form-availability" class="space-y-3">
+                        <label class="text-xs font-bold uppercase tracking-wider text-gray-400 block">Días y Ventanas Horarias Disponibles</label>
+                        <div id="schedule-selector-container" class="space-y-2"></div>
+                        <div class="pt-2 flex justify-end">
+                            <button type="submit" class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-white transition-all">
+                                Guardar Configuración de Agenda
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
-            <div class="lg:col-span-5 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
-                <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Pacientes recientes</h3>
+        <!-- ================= TAB: MIS PACIENTES ACTIVOS ================= -->
+        <div id="tab-pacientes" class="tab-content space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
-                <div id="recent-patients" class="divide-y divide-white/5">
-                    <p class="text-gray-500 text-sm italic">Cargando pacientes...</p>
+                <!-- Lista de Pacientes Extraídos de Citas -->
+                <div class="lg:col-span-4 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-4">
+                    <h3 class="text-base font-serif font-semibold text-clubCrema border-b border-white/5 pb-2">Pacientes Activos</h3>
+                    <div id="active-patients-list" class="space-y-2 max-h-[500px] overflow-y-auto">
+                        <p class="text-gray-500 text-sm italic">Cargando pacientes del sistema...</p>
+                    </div>
+                </div>
+
+                <!-- Expediente Clínico y Recursos Compartidos -->
+                <div id="patient-folder-container" class="hidden lg:col-span-8 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-6">
+                    <div class="flex flex-wrap justify-between items-start border-b border-white/5 pb-4 gap-2">
+                        <div>
+                            <h3 id="selected-patient-title" class="text-lg font-serif font-semibold text-clubCrema">---</h3>
+                            <p id="selected-patient-meta" class="text-xs text-gray-400 font-mono">Expediente Clínico Activo</p>
+                        </div>
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full uppercase tracking-wider font-bold">En Tratamiento</span>
+                    </div>
+
+                    <!-- Historia Clínica -->
+                    <div class="space-y-3">
+                        <label class="text-xs font-bold uppercase tracking-wider text-clubCrema block">Evolución e Historia Clínica</label>
+                        <textarea id="clinical-history-text" rows="5" class="w-full bg-clubOscuro border border-white/10 rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-clubCrema/40 leading-relaxed" placeholder="Escribe aquí las observaciones clínicas de las sesiones..."></textarea>
+                        <div class="flex justify-end">
+                            <button id="btn-save-history" class="bg-clubVerdeMedio text-clubCrema border border-white/10 text-xs font-bold px-4 py-2 rounded-lg hover:bg-clubVerde transition-all">Actualizar Historia Clínica</button>
+                        </div>
+                    </div>
+
+                    <!-- Recursos Didácticos -->
+                    <div class="border-t border-white/5 pt-5 space-y-4">
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Recursos y Ejercicios Compartidos</h4>
+                            <p class="text-xs text-gray-400">Sube guías, PDFs o imágenes exclusivas para este paciente.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="border border-dashed border-white/20 hover:border-clubCrema/40 rounded-xl p-4 flex flex-col items-center justify-center text-center group cursor-pointer transition-colors relative">
+                                <span class="text-xl mb-1">📁</span>
+                                <span id="upload-resource-label" class="text-xs font-semibold text-clubCrema">Subir nuevo recurso</span>
+                                <span class="text-[10px] text-gray-500 mt-0.5">Archivos hasta 10MB</span>
+                                <input type="file" id="upload-resource" class="absolute inset-0 opacity-0 cursor-pointer">
+                            </div>
+
+                            <div id="patient-resources-list" class="space-y-2 max-h-[150px] overflow-y-auto">
+                                <p class="text-gray-500 text-xs italic">No hay archivos compartidos todavía.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="patient-folder-placeholder" class="lg:col-span-8 bg-clubFondo border border-white/5 rounded-2xl p-6 flex items-center justify-center text-center text-gray-500 italic text-sm">
+                    Selecciona un paciente activo de la lista lateral para visualizar su historia clínica y recursos.
                 </div>
             </div>
+        </div>
 
-        </section>
+        <!-- ================= TAB: CHAT INTERNO ================= -->
+        <div id="tab-chat" class="tab-content space-y-6">
+            <div class="bg-clubFondo border border-white/5 rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 h-[550px]">
+                
+                <!-- Canales Abiertos -->
+                <div class="md:col-span-4 border-r border-white/5 flex flex-col bg-black/10">
+                    <div class="p-4 border-b border-white/5">
+                        <h3 class="text-sm font-serif font-semibold text-clubCrema">Mensajes Directos</h3>
+                    </div>
+                    <div id="chat-channels-list" class="flex-grow overflow-y-auto divide-y divide-white/5">
+                        <p class="text-gray-500 text-xs italic p-4">Cargando canales activos...</p>
+                    </div>
+                </div>
+
+                <!-- Ventana Activa Chat -->
+                <div id="chat-window-container" class="hidden md:col-span-8 flex flex-col justify-between bg-white/[0.01]">
+                    <div class="p-4 border-b border-white/5 flex items-center justify-between bg-black/20">
+                        <div>
+                            <h4 id="chat-target-name" class="text-sm font-bold text-white">---</h4>
+                            <p class="text-[10px] text-clubCrema font-medium flex items-center gap-1">Canal de orientación clínica</p>
+                        </div>
+                    </div>
+
+                    <div id="chat-messages-body" class="flex-grow p-4 overflow-y-auto space-y-4 text-xs flex flex-col"></div>
+
+                    <form id="form-chat-send" class="p-3 border-t border-white/5 bg-black/20 flex gap-2">
+                        <input type="text" id="chat-input-message" autocomplete="off" placeholder="Escribe un mensaje de apoyo clínico..." class="flex-grow bg-clubOscuro border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-clubCrema/30">
+                        <button type="submit" class="bg-clubCrema text-clubVerde font-bold text-xs uppercase tracking-wider px-5 rounded-xl hover:bg-white transition-all">
+                            Enviar
+                        </button>
+                    </form>
+                </div>
+                
+                <div id="chat-window-placeholder" class="md:col-span-8 flex items-center justify-center text-center text-gray-500 italic text-sm">
+                    Selecciona una conversación de la lista de pacientes o del menú lateral para chatear.
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <script type="module">
-    // 1. Traemos al guardián desde tu archivo de configuración
-    import { checkAuth, auth, signOut, db, collection, query, where, onSnapshot, getUserProfile } from "./firebase-config.js";
+    <!-- NAVEGACIÓN GLOBAL DE INTERCAMBIO DE TABS -->
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
 
-    // 2. Activamos al guardián: Le decimos que esta pantalla SOLO la pueden ver "psicologas"
+        function switchTab(tabId) {
+            tabButtons.forEach(b => {
+                if(b.getAttribute('data-tab') === tabId) {
+                    b.classList.add('bg-clubCrema', 'text-clubVerde', 'shadow-md');
+                    b.classList.remove('text-clubCrema', 'hover:bg-white/5');
+                } else {
+                    b.classList.remove('bg-clubCrema', 'text-clubVerde', 'shadow-md');
+                    b.classList.add('text-clubCrema', 'hover:bg-white/5');
+                }
+            });
+            tabContents.forEach(content => {
+                if(content.id === tabId) content.classList.add('active');
+                else content.classList.remove('active');
+            });
+        }
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchTab(btn.getAttribute('data-tab'));
+            });
+        });
+    </script>
+
+    <!-- PROCESAMIENTO E INTEGRACIÓN CON FIRESTORE -->
+    <script type="module">
+    import { 
+        checkAuth, auth, signOut, db, collection, query, where, onSnapshot, doc, getDoc, updateDoc, setDoc, addDoc, serverTimestamp 
+    } from "./firebase-config.js";
+    import { getGoogleCalendarAuthUrl, isGoogleCalendarConnected } from "./google-calendar.js";
+
     checkAuth("psicologa");
+    // ================= CONFIGURACIÓN DE INTEGRACIÓN CON GOOGLE =================
+    const GOOGLE_CLIENT_ID = "701273170460-gs24goc02869mjlcbl5cqftt6hpo8lre.apps.googleusercontent.com";
+    const GOOGLE_REDIRECT_URI = "https://us-central1-heyfilms.cloudfunctions.net/google-calendar/oauth2callback"; 
+    const SCOPES = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.readonly";
 
     const money = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+    
+    let currentPsychologistId = null;
+    let selectedPatientId = null;
+    let unsubscribeChatMessages = null;
+    let globalActivePatientsMap = new Map();
+
+    const DAYS_OF_WEEK = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+
+    function setCalendarStatus(profile) {
+        const calendarStatusEl = document.getElementById('calendar-status');
+        const connectBtn = document.getElementById('btn-connect-calendar');
+        if (isGoogleCalendarConnected(profile)) {
+            calendarStatusEl.innerText = "● Conectado";
+            calendarStatusEl.className = "text-xs text-emerald-400 font-medium";
+            connectBtn.innerText = "Reautenticar Calendar";
+        } else {
+            calendarStatusEl.innerText = "○ No vinculado";
+            calendarStatusEl.className = "text-xs text-gray-400 font-medium";
+            connectBtn.innerText = "Vincular Calendar";
+        }
+    }
+
+    // Formatear Fecha Superior Fija
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', options).toUpperCase();
+
+    // Obtener los datos del psicólogo/usuario de manera segura
+    async function getUserProfile(user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        return userDoc.exists() ? userDoc.data() : null;
+    }
 
     auth.onAuthStateChanged(async (user) => {
         if (!user) return;
+        currentPsychologistId = user.uid;
 
+        // 1. Carga de Perfil Original y Verificación de Banner de Estado
         const profile = await getUserProfile(user);
         const displayName = profile ? `${profile.firstName || ""} ${profile.lastName || ""}`.trim() : "";
         const firstName = (profile?.firstName || displayName || "Doctora").split(" ")[0];
+        
         document.getElementById('psychologist-name').innerText = displayName || "Ana Martínez";
         document.getElementById('psychologist-greeting').innerText = `Hola, ${firstName} 👋`;
+        
+        if (profile?.photoURL) {
+            document.getElementById('psychologist-img').src = profile.photoURL;
+        }
+
+        // LÓGICA DE CONTROL DEL BANNER RECUPERADA AL 100%
         const isPending = profile?.applicationStatus === "pending" || profile?.verificationStatus === "pending" || profile?.available === false;
         document.getElementById('professional-status-banner').classList.toggle('hidden', !isPending);
 
-        const q = query(collection(db, "appointments"), where("psychologistId", "==", user.uid));
+        // Estado inicial enlace Google Meet
+        const meetStatusEl = document.getElementById('meet-status');
+        if (profile?.googleMeetLink) {
+            meetStatusEl.innerText = "● Conectado: " + profile.googleMeetLink;
+            meetStatusEl.className = "text-xs text-emerald-400 font-medium truncate max-w-[180px]";
+        } else {
+            meetStatusEl.innerText = "○ Sin vincular";
+            meetStatusEl.className = "text-xs text-gray-400 font-medium";
+        }
+
+        setCalendarStatus(profile || {});
+        renderAvailabilityForm(profile?.availability || {});
+
+        // 2. ESCUCHA EN TIEMPO REAL DE CITAS (FILTRADOS Y CONTADORES ORIGINALES)
+        const qAppointments = query(collection(db, "appointments"), where("psychologistId", "==", user.uid));
         const agendaContainer = document.getElementById('psychologist-appointments');
         const patientsContainer = document.getElementById('recent-patients');
 
-        onSnapshot(q, (snapshot) => {
+        onSnapshot(qAppointments, (snapshot) => {
             const appointments = [];
+            const todayStr = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD para matching preciso
+
             snapshot.forEach((doc) => appointments.push({ id: doc.id, ...doc.data() }));
+            
+            // Ordenamiento cronológico natural
             appointments.sort((a, b) => `${a.date || ""} ${a.time || ""}`.localeCompare(`${b.date || ""} ${b.time || ""}`));
 
+            // Filtrados exactos del código anterior
+            const todayAppointments = appointments.filter(item => item.date === todayStr && item.status !== "cancelada");
             const patientIds = new Set(appointments.map(item => item.patientId).filter(Boolean));
             const totalIncome = appointments.reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-            document.getElementById('today-count').innerText = appointments.filter(item => item.status !== "cancelada").length;
+            // Inyección en contadores superiores
+            document.getElementById('today-count').innerText = todayAppointments.length;
             document.getElementById('active-patients-count').innerText = patientIds.size;
             document.getElementById('month-income').innerHTML = `${money.format(totalIncome)} <span class="text-[10px] text-gray-500 font-sans font-normal">COP</span>`;
 
             if (!appointments.length) {
-                agendaContainer.innerHTML = '<p class="text-gray-500 text-sm">Aún no tienes citas confirmadas.</p>';
-                patientsContainer.innerHTML = '<p class="text-gray-500 text-sm">Los pacientes aparecerán cuando reserven.</p>';
+                agendaContainer.innerHTML = '<p class="text-gray-500 text-sm italic">Aún no tienes citas confirmadas hoy.</p>';
+                patientsContainer.innerHTML = '<p class="text-gray-500 text-sm italic">Los pacientes aparecerán cuando reserven.</p>';
+                buildActivePatientsLists([]);
                 return;
             }
 
-            agendaContainer.innerHTML = appointments.map((item) => `
-                <div class="flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-xl hover:border-white/10 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <span class="text-xs font-mono font-bold text-clubCrema bg-clubVerde px-2.5 py-1.5 rounded-md">${item.time || "--:--"}</span>
-                        <div>
-                            <h5 class="text-sm font-semibold">${item.patientName || item.patientEmail || "Paciente"}</h5>
-                            <p class="text-[11px] text-gray-400">${item.date || "Fecha por confirmar"} · ${item.modality || "Videollamada"}</p>
+            // Renderizado exacto de Citas de Hoy
+            if(todayAppointments.length === 0) {
+                agendaContainer.innerHTML = '<p class="text-gray-500 text-sm italic">No tienes consultas programadas para el día de hoy.</p>';
+            } else {
+                agendaContainer.innerHTML = todayAppointments.map((item) => `
+                    <div class="flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-xl hover:border-white/10 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-mono font-bold text-clubCrema bg-clubVerde px-2.5 py-1.5 rounded-md">${item.time || "--:--"}</span>
+                            <div>
+                                <h5 class="text-sm font-semibold">${item.patientName || item.patientEmail || "Paciente"}</h5>
+                                <p class="text-[11px] text-gray-400">${item.modality || "Videollamada"}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            ${item.googleMeetLink || profile?.googleMeetLink ? 
+                              `<a href="${item.googleMeetLink || profile?.googleMeetLink}" target="_blank" class="text-[10px] bg-clubVerdeMedio px-3 py-1.5 rounded text-clubCrema font-bold hover:bg-white/20 transition-all">UNIRSE</a>` : ''}
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.status || "confirmada"}</span>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.status || "confirmada"}</span>
-                </div>
-            `).join("");
+                `).join("");
+            }
 
-            const patients = [...patientIds].map((id) => {
-                const sessions = appointments.filter(item => item.patientId === id);
-                return sessions[sessions.length - 1];
+            // Construcción del mapeo único de pacientes agendados
+            const unifiedPatients = [];
+            globalActivePatientsMap.clear();
+
+            patientIds.forEach((id) => {
+                const patientSessions = appointments.filter(item => item.patientId === id);
+                const lastSession = patientSessions[patientSessions.length - 1];
+                const cleanPatient = {
+                    id: id,
+                    name: lastSession.patientName || lastSession.patientEmail || "Paciente Activo",
+                    sessionCount: patientSessions.length,
+                    lastDate: lastSession.date || "N/A"
+                };
+                unifiedPatients.push(cleanPatient);
+                globalActivePatientsMap.set(id, cleanPatient);
             });
 
-            patientsContainer.innerHTML = patients.map((item) => `
+            // Listado lateral de Recientes en Inicio
+            patientsContainer.innerHTML = unifiedPatients.map((p) => `
                 <div class="flex justify-between items-center py-3.5 first:pt-0 last:pb-0">
                     <div class="flex items-center gap-3">
                         <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
                         <div>
-                            <h5 class="text-sm font-medium">${item.patientName || item.patientEmail || "Paciente"}</h5>
-                            <p class="text-[10px] text-gray-500 font-mono">${appointments.filter(a => a.patientId === item.patientId).length} sesiones registradas</p>
+                            <h5 class="text-sm font-medium">${p.name}</h5>
+                            <p class="text-[10px] text-gray-500 font-mono">${p.sessionCount} sesiones en total</p>
                         </div>
                     </div>
                     <span class="text-xs text-clubCrema font-semibold">Activo</span>
                 </div>
-            `).join("");
+            `).slice(0, 5).join("");
+
+            // Sincronizar listas en las pestañas secundarias
+            buildActivePatientsLists(unifiedPatients);
         });
     });
 
-    // 3. Lógica para el botón de 'Cerrar Sesión'
-    const btnLogout = document.getElementById('btn-logout');
-    if (btnLogout) {
-        btnLogout.addEventListener('click', async () => {
+    // Cambiar foto de perfil en Base64
+    document.getElementById('upload-avatar').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file || !currentPsychologistId) return;
+
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            const base64String = event.target.result;
             try {
-                await signOut(auth);
-                alert("Sesión cerrada correctamente. ¡Que tengas un excelente descanso, Doctora!");
-                window.location.href = "auth.html"; // Lo manda de regreso al inicio
-            } catch (error) {
-                console.error("Error al cerrar sesión:", error);
+                await updateDoc(doc(db, "users", currentPsychologistId), { photoURL: base64String });
+                document.getElementById('psychologist-img').src = base64String;
+                alert("Foto de perfil actualizada.");
+            } catch (err) {
+                console.error(err);
             }
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Enlace de Google Meet
+    document.getElementById('btn-connect-meet').addEventListener('click', async () => {
+        const currentLink = prompt("Introduce tu enlace permanente de Google Meet:");
+        if (!currentLink) return;
+        if (!currentLink.includes("meet.google.com")) {
+            alert("Enlace no válido.");
+            return;
+        }
+        try {
+            await updateDoc(doc(db, "users", currentPsychologistId), { googleMeetLink: currentLink.trim() });
+            document.getElementById('meet-status').innerText = "● Conectado: " + currentLink.trim();
+            document.getElementById('meet-status').className = "text-xs text-emerald-400 font-medium truncate max-w-[180px]";
+        } catch (err) {
+            console.error(err);
+        }
+    });
+
+    // Conectar Google Calendar
+    document.getElementById('btn-connect-calendar').addEventListener('click', async () => {
+        try {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Por favor inicia sesión primero.");
+                return;
+            }
+            const idToken = await user.getIdToken();
+            const authUrl = await getGoogleCalendarAuthUrl(idToken);
+            window.location.href = authUrl;
+        } catch (err) {
+            console.error(err);
+            alert(err.message || "No se pudo iniciar la conexión con Google Calendar.");
+        }
+    });
+
+    // Formularios de Horarios
+    function renderAvailabilityForm(savedAvailability) {
+        const container = document.getElementById('schedule-selector-container');
+        container.innerHTML = DAYS_OF_WEEK.map(day => {
+            const config = savedAvailability[day] || { active: false, start1: "08:00", end1: "12:00", start2: "14:00", end2: "18:00" };
+            return `
+                <div class="flex flex-wrap items-center justify-between bg-white/5 border border-white/5 p-3 rounded-xl gap-3">
+                    <label class="flex items-center gap-3 text-sm font-medium w-32">
+                        <input type="checkbox" id="check-${day}" ${config.active ? 'checked' : ''} class="w-4 h-4 accent-clubVerdeMedio rounded"> ${day}
+                    </label>
+                    <div class="flex items-center gap-2 text-sm font-mono">
+                        <input type="time" id="start1-${day}" value="${config.start1}" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                        <span>a</span>
+                        <input type="time" id="end1-${day}" value="${config.end1}" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                    </div>
+                    <div class="flex items-center gap-2 text-sm font-mono">
+                        <input type="time" id="start2-${day}" value="${config.start2}" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                        <span>a</span>
+                        <input type="time" id="end2-${day}" value="${config.end2}" class="bg-clubOscuro border border-white/10 rounded px-2 py-1 text-clubCrema">
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    document.getElementById('form-availability').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const updatedAvailability = {};
+        DAYS_OF_WEEK.forEach(day => {
+            updatedAvailability[day] = {
+                active: document.getElementById(`check-${day}`).checked,
+                start1: document.getElementById(`start1-${day}`).value,
+                end1: document.getElementById(`end1-${day}`).value,
+                start2: document.getElementById(`start2-${day}`).value,
+                end2: document.getElementById(`end2-${day}`).value,
+            };
+        });
+        try {
+            await updateDoc(doc(db, "users", currentPsychologistId), { availability: updatedAvailability });
+            alert("Configuración horaria guardada.");
+        } catch (err) {
+            console.error(err);
+        }
+    });
+
+    // ================= CONSTRUCCIÓN SIMULTÁNEA DE LISTAS REALES =================
+    function buildActivePatientsLists(patientsArray) {
+        const listContainer = document.getElementById('active-patients-list');
+        const chatChannelsList = document.getElementById('chat-channels-list');
+
+        if (!patientsArray.length) {
+            listContainer.innerHTML = '<p class="text-gray-500 text-xs italic">No hay pacientes activos por citas agendadas.</p>';
+            chatChannelsList.innerHTML = '<p class="text-gray-500 text-xs italic p-4">No hay canales de chat activos.</p>';
+            return;
+        }
+
+        // Render en Expedientes Clínicos
+        listContainer.innerHTML = patientsArray.map(p => `
+            <button class="w-full text-left p-3 rounded-xl flex items-center gap-3 transition-all border ${selectedPatientId === p.id ? 'bg-clubVerdeMedio/30 border-clubCrema/20' : 'bg-white/5 border-white/5 hover:bg-white/10'}" data-patient-btn="${p.id}">
+                <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                <div class="overflow-hidden">
+                    <h4 class="text-sm font-bold text-white truncate">${p.name}</h4>
+                    <p class="text-[11px] text-gray-400 font-mono">Sesiones totales: ${p.sessionCount}</p>
+                </div>
+            </button>
+        `).join("");
+
+        // Render en Centro de Mensajes
+        chatChannelsList.innerHTML = patientsArray.map(p => `
+            <button class="w-full text-left p-4 hover:bg-white/5 flex items-center gap-3 transition-colors border-b border-white/5 ${selectedPatientId === p.id ? 'bg-white/5' : ''}" data-chat-btn="${p.id}">
+                <div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
+                <div class="overflow-hidden w-full">
+                    <span class="text-xs font-bold text-white truncate block">${p.name}</span>
+                    <p class="text-[11px] text-gray-400 truncate mt-0.5">Abrir chat clínico en tiempo real...</p>
+                </div>
+            </button>
+        `).join("");
+
+        // Vinculación unificada sin errores de referencia cruzada
+        patientsArray.forEach(p => {
+            document.querySelector(`[data-patient-btn="${p.id}"]`)?.addEventListener('click', () => {
+                loadPatientFolder(p.id);
+            });
+
+            document.querySelector(`[data-chat-btn="${p.id}"]`)?.addEventListener('click', () => {
+                switchTab('tab-chat');
+                openChatWindow(p.id);
+            });
         });
     }
+
+    // ================= CARGA DE EXPEDIENTE CLÍNICO COMPLETO =================
+    async function loadPatientFolder(patientId) {
+        selectedPatientId = patientId;
+        const patientData = globalActivePatientsMap.get(patientId);
+
+        document.getElementById('patient-folder-placeholder').classList.add('hidden');
+        document.getElementById('patient-folder-container').classList.remove('hidden');
+
+        document.getElementById('selected-patient-title').innerText = patientData.name;
+        document.getElementById('selected-patient-meta').innerText = `Expediente Clínico Activo · ID: ${patientId.substring(0,8)}`;
+
+        // Resaltar selección visual en la lista lateral
+        document.querySelectorAll('[data-patient-btn]').forEach(b => {
+            b.classList.remove('bg-clubVerdeMedio/30', 'border-clubCrema/20');
+            b.classList.add('bg-white/5', 'border-white/5');
+        });
+        document.querySelector(`[data-patient-btn="${patientId}"]`)?.classList.add('bg-clubVerdeMedio/30', 'border-clubCrema/20');
+
+        // Descarga de Historia Clínica Real
+        const docRef = doc(db, "clinical_histories", `${currentPsychologistId}_${patientId}`);
+        const docSnap = await getDoc(docRef);
+        document.getElementById('clinical-history-text').value = docSnap.exists() ? docSnap.data().notes || "" : "";
+
+        loadPatientResources(patientId);
+    }
+
+    // Guardar historia clínica
+    document.getElementById('btn-save-history').addEventListener('click', async () => {
+        if (!selectedPatientId || !currentPsychologistId) return;
+        const text = document.getElementById('clinical-history-text').value;
+
+        try {
+            await setDoc(doc(db, "clinical_histories", `${currentPsychologistId}_${selectedPatientId}`), {
+                psychologistId: currentPsychologistId,
+                patientId: selectedPatientId,
+                notes: text,
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+            alert("Historia clínica guardada correctamente.");
+        } catch (err) {
+            alert("Error al salvar expediente.");
+        }
+    });
+
+    // Recursos compartidos del Paciente
+    function loadPatientResources(patientId) {
+        const resList = document.getElementById('patient-resources-list');
+        const qRes = query(collection(db, "shared_resources"), where("psychologistId", "==", currentPsychologistId), where("patientId", "==", patientId));
+
+        onSnapshot(qRes, (snap) => {
+            if (snap.empty) {
+                resList.innerHTML = '<p class="text-gray-500 text-xs italic">No hay archivos compartidos todavía.</p>';
+                return;
+            }
+            let html = "";
+            snap.forEach(doc => {
+                const item = doc.data();
+                html += `
+                    <div class="bg-white/5 border border-white/5 rounded-xl p-3 flex justify-between items-center text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="text-base">📄</span>
+                            <div class="truncate">
+                                <a href="${item.fileUrl}" target="_blank" class="font-medium text-clubCrema hover:underline truncate block">${item.fileName}</a>
+                                <p class="text-[10px] text-gray-500">Recurso disponible</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            resList.innerHTML = html;
+        });
+    }
+
+    // Subir Recurso en Base64 a Firestore
+    document.getElementById('upload-resource').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file || !selectedPatientId) return;
+        
+        const label = document.getElementById('upload-resource-label');
+        label.innerText = "Subiendo...";
+
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            const fileBase64 = event.target.result;
+            try {
+                await addDoc(collection(db, "shared_resources"), {
+                    psychologistId: currentPsychologistId,
+                    patientId: selectedPatientId,
+                    fileName: file.name,
+                    fileUrl: fileBase64,
+                    createdAt: serverTimestamp()
+                });
+                label.innerText = "Subir nuevo recurso";
+                alert("Archivo compartido correctamente.");
+            } catch (err) {
+                label.innerText = "Error al subir";
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // ================= APERTURA Y ESCUCHA EN VIVO DEL CHAT =================
+    function openChatWindow(patientId) {
+        if (unsubscribeChatMessages) unsubscribeChatMessages();
+        
+        selectedPatientId = patientId;
+        const patientData = globalActivePatientsMap.get(patientId);
+        
+        document.getElementById('chat-window-placeholder').classList.add('hidden');
+        document.getElementById('chat-window-container').classList.remove('hidden');
+        document.getElementById('chat-target-name').innerText = patientData.name;
+
+        // Identificador simétrico de canal para evitar duplicados
+        const chatId = currentPsychologistId < patientId ? `${currentPsychologistId}_${patientId}` : `${patientId}_${currentPsychologistId}`;
+        const qMessages = query(collection(db, "chats", chatId, "messages"), where("createdAt", "!=", null));
+        const body = document.getElementById('chat-messages-body');
+
+        // Escucha en tiempo real de los mensajes del canal
+        unsubscribeChatMessages = onSnapshot(qMessages, (snap) => {
+            const msgs = [];
+            snap.forEach(doc => msgs.push(doc.data()));
+            msgs.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
+
+            body.innerHTML = msgs.map(m => {
+                const isMe = m.senderId === currentPsychologistId;
+                return `
+                    <div class="flex flex-col ${isMe ? 'items-end ml-auto' : 'items-start'} max-w-[80%] mb-2">
+                        <div class="${isMe ? 'bg-clubVerdeMedio text-white rounded-tr-none border border-white/10' : 'bg-white/10 text-white rounded-tl-none'} p-3 rounded-2xl leading-relaxed">
+                            ${m.text}
+                        </div>
+                    </div>
+                `;
+            }).join("");
+            body.scrollTop = body.scrollHeight; 
+        });
+    }
+
+    // Enviar mensajes en caliente al chat
+    document.getElementById('form-chat-send').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('chat-input-message');
+        const text = input.value.trim();
+        if (!text || !selectedPatientId) return;
+
+        const chatId = currentPsychologistId < selectedPatientId ? `${currentPsychologistId}_${selectedPatientId}` : `${selectedPatientId}_${currentPsychologistId}`;
+        input.value = "";
+
+        try {
+            await addDoc(collection(db, "chats", chatId, "messages"), {
+                senderId: currentPsychologistId,
+                text: text,
+                createdAt: serverTimestamp()
+            });
+        } catch (err) {
+            console.error("Error al enviar el mensaje:", err);
+        }
+    });
+
+    // Desconexión de sesión
+    document.getElementById('btn-logout')?.addEventListener('click', async () => {
+        try {
+            if (unsubscribeChatMessages) unsubscribeChatMessages();
+            await signOut(auth);
+            window.location.href = "auth.html";
+        } catch (error) {
+            console.error(error);
+        }
+    });
 </script>
 </body>
 </html>
