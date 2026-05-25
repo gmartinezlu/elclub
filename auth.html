@@ -71,6 +71,10 @@
                         </div>
                         <input type="password" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
                     </div>
+                    <div class="flex items-center gap-3">
+                        <input id="remember-login" name="remember" type="checkbox" class="h-4 w-4 rounded border-white/20 bg-white/5 text-clubCrema focus:ring-clubCrema">
+                        <label for="remember-login" class="text-xs text-gray-300">Mantener sesión iniciada</label>
+                    </div>
                     
                     <button type="submit" class="w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl shadow-lg hover:bg-white transition-all text-sm tracking-wide mt-2">
                         Entrar a El Club
@@ -144,6 +148,9 @@
             createUserWithEmailAndPassword,
             signInWithEmailAndPassword,
             sendPasswordResetEmail,
+            setPersistence,
+            browserLocalPersistence,
+            browserSessionPersistence,
             doc,
             setDoc,
             getUserProfile,
@@ -222,11 +229,12 @@
         // --- Manejo del envío del Formulario de Inicio de Sesión con Firebase ---
         document.getElementById('form-login').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const inputs = e.target.querySelectorAll('input');
-            const email = inputs[0].value;
-            const password = inputs[1].value;
+            const email = e.target.querySelector('input[type="email"]').value;
+            const password = e.target.querySelector('input[type="password"]').value;
+            const remember = e.target.querySelector('input[name="remember"]').checked;
 
             try {
+                await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
                 // Autenticar con Firebase
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const profile = await getUserProfile(userCredential.user);
