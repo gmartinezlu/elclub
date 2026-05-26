@@ -60,13 +60,13 @@
 
             <nav id="sidebar-nav" class="space-y-1.5 text-sm font-medium">
                 <button data-tab="tab-inicio" class="w-full flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl transition-all shadow-md tab-btn">
-                    <span>ðŸ </span> Inicio
+                    <span>📅</span> Agenda
                 </button>
                 <button data-tab="tab-agenda" class="w-full flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all tab-btn">
-                    <span>ðŸ“…</span> Agenda y Google
+                    <span>🔗</span> Integración
                 </button>
                 <button data-tab="tab-pacientes" class="w-full flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all tab-btn">
-                    <span>ðŸ‘¥</span> Mis Pacientes Activos
+                    <span>👥</span> Pacientes
                 </button>
                 <button data-tab="tab-chat" class="w-full flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all tab-btn">
                     <span>ðŸ’¬</span> Centro de Mensajes
@@ -104,35 +104,111 @@
         <div id="tab-inicio" class="tab-content active space-y-8">
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Citas hoy</p>
-                    <h3 id="today-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">0</h3>
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Sesiones hoy</p>
+                    <h3 id="today-count" class="text-3xl font-bold font-mono mt-3 text-clubCrema">0</h3>
                 </div>
                 <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Pacientes activos</p>
-                    <h3 id="active-patients-count" class="text-2xl font-bold font-mono mt-2 text-clubCrema">0</h3>
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Próximas sesiones</p>
+                    <h3 id="upcoming-sessions-count" class="text-3xl font-bold font-mono mt-3 text-clubCrema">0</h3>
                 </div>
                 <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Control de Pagos</p>
-                    <h3 id="month-income" class="text-xl font-bold font-mono mt-2 text-emerald-400">$0 <span class="text-[10px] text-gray-500 font-sans font-normal">(Pendiente organizar)</span></h3>
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Saldo disponible</p>
+                    <h3 id="balance-available" class="text-3xl font-bold font-mono mt-3 text-emerald-400">$0</h3>
                 </div>
                 <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">CalificaciÃ³n</p>
-                    <h3 class="text-2xl font-bold font-mono mt-2 text-yellow-400">4.9 â˜…</h3>
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Ingresos del mes</p>
+                    <h3 id="month-income" class="text-3xl font-bold font-mono mt-3 text-clubCrema">$0</h3>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Ingresos confirmados</p>
+                    <h3 id="confirmed-income" class="text-2xl font-bold text-emerald-400 mt-3">$0</h3>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Ingresos pendientes</p>
+                    <h3 id="pending-income" class="text-2xl font-bold text-amber-300 mt-3">$0</h3>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Sesiones esta semana</p>
+                    <h3 id="week-sessions-count" class="text-2xl font-bold text-clubCrema mt-3">0</h3>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Próxima sesión</p>
+                    <h3 id="next-session-card" class="text-sm font-semibold text-clubCrema mt-3 leading-relaxed">Cargando…</h3>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Confirmadas</p>
+                    <h3 id="status-count-confirmed" class="text-2xl font-bold text-clubCrema mt-3">0</h3>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Completadas</p>
+                    <h3 id="status-count-completed" class="text-2xl font-bold text-emerald-400 mt-3">0</h3>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Pendiente pago</p>
+                    <h3 id="status-count-pending" class="text-2xl font-bold text-amber-300 mt-3">0</h3>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Canceladas</p>
+                    <h3 id="status-count-cancelled" class="text-2xl font-bold text-red-400 mt-3">0</h3>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Pacientes en seguimiento</p>
+                    <h3 id="active-patients-count" class="text-3xl font-bold font-mono mt-3 text-clubCrema">0</h3>
+                </div>
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Sesiones completadas</p>
+                    <h3 id="sessions-completed-count" class="text-3xl font-bold font-mono mt-3 text-emerald-400">0</h3>
+                </div>
+                <div class="bg-clubFondo border border-white/5 p-5 rounded-2xl">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Horas acompañadas</p>
+                    <h3 id="hours-accompanied-count" class="text-3xl font-bold font-mono mt-3 text-clubCrema">0h</h3>
                 </div>
             </section>
 
             <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div class="lg:col-span-7 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
-                    <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Citas de hoy</h3>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3">
+                        <div>
+                            <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Agenda de hoy</h3>
+                            <p class="text-xs text-gray-400 mt-2">Organiza tus sesiones confirmadas con claridad emocional.</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] uppercase tracking-wider text-gray-400">Próximas en el calendario</p>
+                            <p id="next-session-summary" class="text-sm font-semibold text-clubCrema mt-1">Cargando…</p>
+                        </div>
+                    </div>
                     <div id="psychologist-appointments" class="space-y-3">
                         <p class="text-gray-500 text-sm italic">Cargando agenda...</p>
                     </div>
                 </div>
 
-                <div class="lg:col-span-5 bg-clubFondo border border-white/5 rounded-2xl p-6 space-y-5">
-                    <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Pacientes recientes</h3>
-                    <div id="recent-patients" class="divide-y divide-white/5">
-                        <p class="text-gray-500 text-sm italic">Cargando pacientes...</p>
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="bg-clubFondo border border-white/5 rounded-2xl p-6">
+                        <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Próximas sesiones</h3>
+                        <div id="upcoming-sessions-list" class="space-y-3 mt-4">
+                            <p class="text-gray-500 text-sm italic">Cargando próximas sesiones...</p>
+                        </div>
+                    </div>
+                    <div class="bg-clubFondo border border-white/5 rounded-2xl p-6">
+                        <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Resumen semanal</h3>
+                        <div id="weekly-summary" class="space-y-3 mt-4 text-sm text-gray-400 leading-relaxed">
+                            <p class="italic">Cargando resumen de la semana...</p>
+                        </div>
+                    </div>
+                    <div class="bg-clubFondo border border-white/5 rounded-2xl p-6">
+                        <h3 class="text-base font-serif font-semibold tracking-wide text-clubCrema border-b border-white/5 pb-3">Disponibilidad</h3>
+                        <div id="availability-summary" class="mt-4 text-sm text-gray-400 leading-relaxed">
+                            Actualiza tu horario para que los pacientes vean cuándo pueden agendar.
+                        </div>
                     </div>
                 </div>
             </section>
@@ -385,6 +461,23 @@
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', options).toUpperCase();
 
+    function parseLocalDateTime(date, time) {
+        if (!date) return null;
+        const [year, month, day] = date.split('-').map(Number);
+        const [hours = 0, minutes = 0] = (time || '00:00').split(':').map(Number);
+        return new Date(year, month - 1, day, hours, minutes);
+    }
+
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value);
+    }
+
+    function getNextSessionSummary(appointments) {
+        if (!appointments.length) return 'No hay sesiones próximas programadas.';
+        const next = appointments[0];
+        return `${next.patientName || 'Paciente'} · ${next.date} ${next.time || ''} · ${next.status ? next.status.toUpperCase() : 'Sin estado'}`;
+    }
+
     async function getUserProfile(user) {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         return userDoc.exists() ? userDoc.data() : null;
@@ -418,25 +511,96 @@
 
         onSnapshot(qAppointments, (snapshot) => {
             const appointments = [];
-            const todayStr = new Date().toISOString().split('T')[0];
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
 
             snapshot.forEach((doc) => appointments.push({ id: doc.id, ...doc.data() }));
-            appointments.sort((a, b) => `${a.date || ""} ${a.time || ""}`.localeCompare(`${b.date || ""} ${b.time || ""}`));
+            appointments.sort((a, b) => {
+                const dateA = parseLocalDateTime(a.date, a.time);
+                const dateB = parseLocalDateTime(b.date, b.time);
+                return dateA - dateB;
+            });
 
-            todayAppointmentsGlobal = appointments.filter(item => item.date === todayStr && item.status !== "cancelada");
-            const patientIds = new Set(appointments.map(item => item.patientId).filter(Boolean));
+            const nonCancelledAppointments = appointments.filter(item => item.status !== "cancelada");
+            todayAppointmentsGlobal = nonCancelledAppointments.filter(item => item.date === todayStr);
+            const patientIds = new Set(nonCancelledAppointments.map(item => item.patientId).filter(Boolean));
 
-            // Pagos: AcumulaciÃ³n de montos de consultas agendadas
-            const totalPendingPayments = appointments.filter(item => item.status !== "cancelada").reduce((sum, item) => sum + Number(item.amount || 0), 0);
-            const moneyFormat = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+            const statusCounts = {
+                confirmada: 0,
+                completada: 0,
+                "pendiente pago": 0,
+                cancelada: 0
+            };
+            const normalizeStatus = (value) => String(value || '').trim().toLowerCase().replace(/[_\s]+/g, ' ');
+            appointments.forEach(item => {
+                const statusKey = normalizeStatus(item.status);
+                if (statusCounts.hasOwnProperty(statusKey)) statusCounts[statusKey] += 1;
+            });
+
+            const upcomingAppointments = appointments.filter(item => {
+                const appointmentDate = parseLocalDateTime(item.date, item.time);
+                return appointmentDate && appointmentDate > today && normalizeStatus(item.status) !== "cancelada";
+            });
+
+            const startOfWeek = new Date(today);
+            const weekDay = startOfWeek.getDay();
+            const diffToMonday = weekDay === 0 ? -6 : 1 - weekDay;
+            startOfWeek.setDate(startOfWeek.getDate() + diffToMonday);
+            startOfWeek.setHours(0, 0, 0, 0);
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(endOfWeek.getDate() + 7);
+
+            const weeklyAppointments = nonCancelledAppointments.filter(item => {
+                const appointmentDate = parseLocalDateTime(item.date, item.time);
+                return appointmentDate && appointmentDate >= startOfWeek && appointmentDate < endOfWeek;
+            });
+
+            const completedAppointments = appointments.filter(item => normalizeStatus(item.status) === "completada");
+            const sessionHours = completedAppointments.reduce((hours, item) => hours + (Number(item.duration) || 1), 0);
+            const amountCompleted = completedAppointments.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+            const amountConfirmed = appointments.filter(item => normalizeStatus(item.status) === "confirmada").reduce((sum, item) => sum + Number(item.amount || 0), 0);
+            const amountMonth = nonCancelledAppointments.filter(item => {
+                const date = parseLocalDateTime(item.date, item.time);
+                return date && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+            }).reduce((sum, item) => sum + Number(item.amount || 0), 0);
+            const amountPending = nonCancelledAppointments.filter(item => normalizeStatus(item.status) === 'pendiente pago').reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
             document.getElementById('today-count').innerText = todayAppointmentsGlobal.length;
-            document.getElementById('active-patients-count').innerText = patientIds.size;
-            document.getElementById('month-income').innerHTML = `${moneyFormat.format(totalPendingPayments)} <span class="text-[10px] text-gray-400 font-normal block font-sans">Monto total registrado</span>`;
+            document.getElementById('upcoming-sessions-count').innerText = upcomingAppointments.length;
+            document.getElementById('balance-available').innerText = formatCurrency(amountCompleted);
+            document.getElementById('month-income').innerText = formatCurrency(amountMonth);
+            document.getElementById('confirmed-income').innerText = formatCurrency(amountConfirmed);
+            document.getElementById('pending-income').innerText = formatCurrency(amountPending);
+            document.getElementById('week-sessions-count').innerText = weeklyAppointments.length;
+
+            const weeklySummaryEl = document.getElementById('weekly-summary');
+            if (weeklyAppointments.length === 0) {
+                weeklySummaryEl.innerHTML = '<p class="text-gray-500 text-sm italic">No hay sesiones esta semana.</p>';
+            } else {
+                weeklySummaryEl.innerHTML = weeklyAppointments.slice(0, 5).map(item => `
+                    <div class="bg-white/5 border border-white/5 rounded-xl p-3">
+                        <p class="text-[11px] uppercase tracking-wider text-gray-400">${item.date} · ${item.time || '--:--'}</p>
+                        <p class="text-sm font-semibold text-clubCrema mt-1">${item.patientName || item.patientEmail || 'Paciente'}</p>
+                        <p class="text-xs text-gray-400 mt-1">${item.status ? item.status.toUpperCase() : 'SIN ESTADO'} · ${item.modality || 'Videollamada'}</p>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('status-count-confirmed').innerText = statusCounts.confirmada;
+            document.getElementById('status-count-completed').innerText = statusCounts.completada;
+            document.getElementById('status-count-pending').innerText = statusCounts["pendiente pago"];
+            document.getElementById('status-count-cancelled').innerText = statusCounts.cancelada;
+            document.getElementById('sessions-completed-count').innerText = completedAppointments.length;
+            document.getElementById('hours-accompanied-count').innerText = `${sessionHours}h`;
+
+            const nextSessionSummary = getNextSessionSummary(upcomingAppointments);
+            document.getElementById('next-session-summary').innerText = nextSessionSummary;
+            document.getElementById('next-session-card')?.innerText = nextSessionSummary;
 
             if (!appointments.length) {
-                agendaContainer.innerHTML = '<p class="text-gray-500 text-sm italic">AÃºn no tienes citas confirmadas.</p>';
-                patientsContainer.innerHTML = '<p class="text-gray-500 text-sm italic">Los pacientes aparecerÃ¡n cuando reserven.</p>';
+                agendaContainer.innerHTML = '<p class="text-gray-500 text-sm italic">Aún no tienes citas registradas en el sistema.</p>';
+                patientsContainer.innerHTML = '<p class="text-gray-500 text-sm italic">Los pacientes aparecerán aquí cuando agenden una sesión.</p>';
+                document.getElementById('upcoming-sessions-list').innerHTML = '<p class="text-gray-500 text-sm italic">No hay sesiones próximas.</p>';
                 buildActivePatientsLists([]);
                 return;
             }
@@ -450,23 +614,34 @@
                             <span class="text-xs font-mono font-bold text-clubCrema bg-clubVerde px-2.5 py-1.5 rounded-md">${item.time || "--:--"}</span>
                             <div>
                                 <h5 class="text-sm font-semibold">${item.patientName || item.patientEmail || "Paciente"}</h5>
-                                <p class="text-[11px] text-gray-400">${item.modality || "Videollamada"}</p>
+                                <p class="text-[11px] text-gray-400">${item.modality || "Videollamada"} · ${item.status ? item.status.toUpperCase() : 'SIN ESTADO'}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2 ml-auto sm:ml-0">
                             ${item.googleMeetLink || item.meetLink || currentPsychologistProfile?.googleMeetLink ? 
                               `<a href="${item.googleMeetLink || item.meetLink || currentPsychologistProfile?.googleMeetLink}" target="_blank" class="text-[10px] bg-clubVerdeMedio px-3 py-1.5 rounded text-clubCrema font-bold hover:bg-white/20 transition-all">UNIRSE</a>` : ''}
-                            <button onclick="sendIndividualReminder('${item.patientId}', '${item.patientName || 'Paciente'}', '${item.date}', '${item.time}')" class="text-[10px] bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded hover:bg-amber-500/40 transition-all font-semibold">ðŸ”” Recordar</button>
+                            <button onclick="sendIndividualReminder('${item.patientId}', '${item.patientName || 'Paciente'}', '${item.date}', '${item.time}')" class="text-[10px] bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded hover:bg-amber-500/40 transition-all font-semibold">🔔 Recordar</button>
                         </div>
                     </div>
                 `).join("");
             }
 
+            document.getElementById('upcoming-sessions-list').innerHTML = upcomingAppointments.slice(0, 4).map(item => `
+                <div class="bg-white/5 border border-white/5 rounded-xl p-4 flex justify-between items-start gap-3">
+                    <div>
+                        <p class="text-xs uppercase tracking-wider text-gray-400">${item.date} · ${item.time || '---'}</p>
+                        <h5 class="text-sm font-semibold text-clubCrema">${item.patientName || item.patientEmail || 'Paciente'}</h5>
+                        <p class="text-[11px] text-gray-400">${item.modality || 'Videollamada'}</p>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded ${item.status === 'confirmada' ? 'bg-emerald-500/15 text-emerald-300' : item.status === 'pendiente pago' ? 'bg-amber-500/15 text-amber-300' : 'bg-white/10 text-gray-300'}">${item.status || 'Pendiente'}</span>
+                </div>
+            `).join("");
+
             const unifiedPatients = [];
             globalActivePatientsMap.clear();
 
             patientIds.forEach((id) => {
-                const patientSessions = appointments.filter(item => item.patientId === id);
+                const patientSessions = nonCancelledAppointments.filter(item => item.patientId === id);
                 const lastSession = patientSessions[patientSessions.length - 1];
                 const cleanPatient = {
                     id: id,
