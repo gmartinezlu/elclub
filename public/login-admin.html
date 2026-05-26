@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Profesional - El Club</title>
+    <title>Acceso Admin - El Club</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,22 +39,22 @@
         </a>
         <div class="text-2xl font-serif font-bold tracking-wide text-clubCrema">El Club</div>
         <a href="auth.html" class="border border-clubCrema text-clubCrema rounded-full px-5 py-2 text-xs font-semibold hover:bg-clubCrema hover:text-clubVerde transition-all">
-            Soy paciente
+            Acceso usuarios
         </a>
     </header>
 
     <main class="flex-grow flex items-center justify-center px-4 py-12">
         <div class="w-full max-w-md bg-clubFondoCard rounded-2xl shadow-2xl border border-white/5 overflow-hidden">
             <div class="bg-clubVerde py-6 px-8 border-b border-white/10">
-                <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-clubCrema/70 mb-3">Portal profesional</p>
-                <h1 class="text-2xl font-serif text-clubCrema font-semibold tracking-wide">Acceso para psicólogas</h1>
-                <p class="text-xs text-gray-300 mt-2 leading-relaxed">Ingresa al panel de agenda, pacientes y estado de tu perfil profesional.</p>
+                <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-clubCrema/70 mb-3">Consola central</p>
+                <h1 class="text-2xl font-serif text-clubCrema font-semibold tracking-wide">Acceso administrativo</h1>
+                <p class="text-xs text-gray-300 mt-2 leading-relaxed">Gestiona solicitudes, usuarios, reservas, transacciones y métricas de la plataforma.</p>
             </div>
 
-            <form id="form-login-psicologa" class="p-8 space-y-5">
+            <form id="form-login-admin" class="p-8 space-y-5">
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Correo profesional</label>
-                    <input name="email" type="email" required placeholder="tu@correo.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2">Correo admin</label>
+                    <input name="email" type="email" required placeholder="admin@elclub.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
                 </div>
 
                 <div>
@@ -64,29 +64,25 @@
                     </div>
                     <input name="password" type="password" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-clubCrema transition-colors placeholder:text-gray-600">
                 </div>
-                <div class="flex items-center gap-3">
-                    <input id="remember-login" name="remember" type="checkbox" class="h-4 w-4 rounded border-white/20 bg-white/5 text-clubCrema focus:ring-clubCrema">
-                    <label for="remember-login" class="text-xs text-gray-300">Mantener sesión iniciada</label>
-                </div>
 
                 <button type="submit" class="w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl shadow-lg hover:bg-white transition-all text-sm tracking-wide">
-                    Entrar al panel profesional
+                    Entrar a la consola admin
                 </button>
 
                 <div class="bg-white/5 border border-white/10 rounded-xl p-4 text-xs text-gray-300 leading-relaxed">
-                    ¿Aún no tienes cuenta profesional?
-                    <a href="registro-psicologa.html" class="text-clubCrema font-semibold hover:underline">Postula como psicóloga</a>.
+                    Este acceso es exclusivo para cuentas con rol de administración en Firebase.
                 </div>
             </form>
         </div>
     </main>
 
     <footer class="bg-clubFondoCard border-t border-white/5 py-6 text-center text-[11px] text-gray-500 font-semibold tracking-wide">
-        © 2026 El Club by Mile Moya · Portal profesional verificado. · <a href="login-admin.html" class="text-clubCrema hover:underline">Admin</a>
+        © 2026 El Club by Mile Moya · Administración de plataforma.
     </footer>
 
     <script type="module">
-        import "./js/auth/psychologistLoginPage.js";
+        import "./js/auth/adminLoginPage.js";
+
     </script>
 </body>
 </html>

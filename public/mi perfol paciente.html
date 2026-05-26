@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - El Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                colors: { clubVerde:'#084739', clubVerdeMedio:'#0f5445', clubCrema:'#eadac8', clubOscuro:'#1a1a1a', clubFondoCard:'#121212' },
+                fontFamily: { sans:['Plus Jakarta Sans','sans-serif'], serif:['Playfair Display','serif'] }
+            }}
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubOscuro text-white min-h-screen md:flex antialiased">
+
+    <aside class="w-full md:w-64 bg-clubVerde text-white flex flex-col justify-between p-6 border-r border-white/5 shrink-0">
+        <div>
+            <div class="text-2xl font-serif font-bold text-clubCrema mb-8">El Club</div>
+            <div class="bg-clubVerdeMedio rounded-xl p-4 flex items-center gap-3 border border-white/10 mb-8">
+                <div class="relative group cursor-pointer w-11 h-11">
+                    <div id="user-avatar" class="w-11 h-11 bg-clubCrema text-clubVerde rounded-full flex items-center justify-center text-sm font-bold overflow-hidden">
+                        <span id="user-initials">US</span>
+                        <img id="user-photo" class="hidden w-full h-full object-cover rounded-full" src="" alt="">
+                    </div>
+                    <div id="btn-change-photo" class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                        <span class="text-white text-[10px] font-bold">📷</span>
+                    </div>
+                </div>
+                <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp" class="hidden">
+                <div>
+                    <h4 id="patient-name" class="text-sm font-bold text-white">Paciente</h4>
+                    <p class="text-[10px] uppercase tracking-wider text-clubCrema/80">Paciente</p>
+                </div>
+            </div>
+            <nav class="space-y-1.5 text-sm font-medium">
+                <a href="dashboard-paciente.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>🏠</span> Inicio</a>
+                <a href="mis-citas.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>📅</span> Mis citas</a>
+                <a href="mis-notas.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>📓</span> Mis notas</a>
+                <a href="perfil-psicologa.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>🔍</span> Buscar psicóloga</a>
+                <a href="mis-pagos.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>💳</span> Pagos</a>
+                <a href="mi-perfil-paciente.html" class="flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl shadow-md"><span>👤</span> Mi perfil</a>
+            </nav>
+        </div>
+        <button id="btn-logout" class="w-full flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-clubCrema/60 hover:text-white px-4 py-3 transition-colors mt-8 pt-4 border-t border-white/10">
+            <span>🚪</span> Cerrar sesión
+        </button>
+    </aside>
+
+    <main class="flex-grow p-6 md:p-10 space-y-8 overflow-y-auto">
+        <header class="border-b border-white/5 pb-6">
+            <h1 class="text-2xl md:text-3xl font-serif font-semibold">Mi Perfil 👤</h1>
+            <p class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Edita tu información personal</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Foto de perfil grande -->
+            <div class="lg:col-span-4">
+                <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-6 flex flex-col items-center gap-4 text-center">
+                    <div class="relative group cursor-pointer">
+                        <div id="big-avatar" class="w-28 h-28 bg-clubCrema text-clubVerde rounded-full flex items-center justify-center text-3xl font-bold overflow-hidden shadow-lg">
+                            <span id="big-initials">US</span>
+                            <img id="big-photo" class="hidden w-full h-full object-cover rounded-full" src="" alt="">
+                        </div>
+                        <div id="btn-change-photo-big" class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <span class="text-white text-sm font-bold">📷 Cambiar</span>
+                        </div>
+                    </div>
+                    <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                        <div id="upload-progress" class="hidden h-full bg-clubCrema rounded-full transition-all duration-300" style="width:0%"></div>
+                    </div>
+                    <div>
+                        <h3 id="profile-name" class="text-sm font-bold text-white">—</h3>
+                        <p class="text-xs text-gray-400">Paciente</p>
+                        <p id="profile-email" class="text-[11px] text-gray-500 mt-1">—</p>
+                    </div>
+                    <div id="psicologa-asignada" class="hidden w-full bg-clubVerdeMedio border border-white/10 rounded-xl p-3 text-xs text-center">
+                        <p class="text-gray-400">Psicóloga asignada</p>
+                        <p id="psy-asignada-nombre" class="text-clubCrema font-semibold mt-1">—</p>
+                        <a href="perfil-psicologa.html" class="text-[10px] text-gray-400 hover:text-white underline mt-1 inline-block">Cambiar psicóloga</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario edición -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-6 space-y-5">
+                    <h3 class="text-sm font-serif font-semibold text-clubCrema border-b border-white/5 pb-3">Información personal</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2 block">Nombre</label>
+                            <input id="inp-nombre" type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-clubCrema">
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2 block">Apellido</label>
+                            <input id="inp-apellido" type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-clubCrema">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2 block">Correo electrónico</label>
+                        <input id="inp-email" type="email" disabled class="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-sm text-gray-500 cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2 block">Teléfono</label>
+                        <input id="inp-telefono" type="tel" placeholder="+57 300 000 0000" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold uppercase tracking-wider text-clubCrema mb-2 block">Ciudad</label>
+                        <input id="inp-ciudad" type="text" placeholder="Bogotá, Colombia" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-clubCrema">
+                    </div>
+                    <button id="btn-guardar" class="w-full bg-clubCrema text-clubVerde font-bold py-4 rounded-xl text-sm tracking-wide hover:bg-white transition-all">
+                        Guardar cambios
+                    </button>
+                    <p id="save-msg" class="hidden text-center text-emerald-400 text-sm">✅ Perfil actualizado correctamente.</p>
+                </div>
+
+                <!-- Cambiar contraseña -->
+                <div class="bg-clubFondoCard border border-white/5 rounded-2xl p-6 space-y-4">
+                    <h3 class="text-sm font-serif font-semibold text-clubCrema border-b border-white/5 pb-3">Cambiar contraseña</h3>
+                    <p class="text-xs text-gray-400">Te enviaremos un correo para restablecer tu contraseña.</p>
+                    <button id="btn-reset-pass" class="bg-white/5 border border-white/10 text-clubCrema font-bold text-xs px-6 py-3 rounded-xl hover:bg-white/10 transition-all">
+                        Enviar correo de recuperación
+                    </button>
+                    <p id="reset-msg" class="hidden text-emerald-400 text-xs">✅ Correo enviado. Revisa tu bandeja de entrada.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { checkAuth, auth, signOut, db, getUserProfile, doc, updateDoc, sendPasswordResetEmail } from "./firebase-config.js";
+        import { initProfilePhoto, loadProfilePhoto } from "./profile-photo.js";
+
+        checkAuth("paciente");
+
+        auth.onAuthStateChanged(async user => {
+            if (!user) return;
+            const profile = await getUserProfile(user);
+            if (!profile) return;
+
+            const name = `${profile.firstName||""} ${profile.lastName||""}`.trim();
+            const initials = name.split(" ").slice(0,2).map(w=>w[0]).join("").toUpperCase() || "US";
+
+            // Sidebar
+            document.getElementById("patient-name").innerText = name;
+            document.getElementById("user-initials").innerText = initials;
+
+            // Perfil grande
+            document.getElementById("big-initials").innerText = initials;
+            document.getElementById("profile-name").innerText = name || user.email;
+            document.getElementById("profile-email").innerText = user.email;
+
+            // Cargar foto
+            if (profile.photoURL) {
+                loadProfilePhoto(profile.photoURL, { avatarId:"user-photo", initialsId:"user-initials" });
+                loadProfilePhoto(profile.photoURL, { avatarId:"big-photo", initialsId:"big-initials" });
+            }
+
+            // Psicóloga asignada
+            if (profile.assignedPsychologistName) {
+                document.getElementById("psicologa-asignada").classList.remove("hidden");
+                document.getElementById("psy-asignada-nombre").innerText = profile.assignedPsychologistName;
+            }
+
+            // Formulario
+            document.getElementById("inp-nombre").value = profile.firstName || "";
+            document.getElementById("inp-apellido").value = profile.lastName || "";
+            document.getElementById("inp-email").value = user.email || "";
+            document.getElementById("inp-telefono").value = profile.phone || "";
+            document.getElementById("inp-ciudad").value = profile.city || "";
+
+            // Foto avatar sidebar
+            initProfilePhoto({
+                avatarId: "user-photo", initialsId: "user-initials",
+                inputId: "photo-input", btnId: "btn-change-photo",
+                progressId: "upload-progress"
+            });
+
+            // Foto avatar grande
+            initProfilePhoto({
+                avatarId: "big-photo", initialsId: "big-initials",
+                inputId: "photo-input", btnId: "btn-change-photo-big",
+                progressId: "upload-progress"
+            });
+
+            // Guardar
+            document.getElementById("btn-guardar").addEventListener("click", async () => {
+                const btn = document.getElementById("btn-guardar");
+                btn.disabled = true; btn.innerText = "Guardando...";
+                try {
+                    await updateDoc(doc(db,"users",user.uid), {
+                        firstName: document.getElementById("inp-nombre").value.trim(),
+                        lastName:  document.getElementById("inp-apellido").value.trim(),
+                        phone:     document.getElementById("inp-telefono").value.trim(),
+                        city:      document.getElementById("inp-ciudad").value.trim(),
+                        updatedAt: new Date().toISOString()
+                    });
+                    document.getElementById("save-msg").classList.remove("hidden");
+                    setTimeout(() => document.getElementById("save-msg").classList.add("hidden"), 3000);
+                } catch(e) {
+                    alert("Error: " + e.message);
+                } finally {
+                    btn.disabled = false; btn.innerText = "Guardar cambios";
+                }
+            });
+
+            // Reset contraseña
+            document.getElementById("btn-reset-pass").addEventListener("click", async () => {
+                try {
+                    await sendPasswordResetEmail(auth, user.email);
+                    document.getElementById("reset-msg").classList.remove("hidden");
+                } catch(e) {
+                    alert("Error: " + e.message);
+                }
+            });
+        });
+
+        document.getElementById("btn-logout").addEventListener("click", async () => {
+            if (confirm("¿Cerrar sesión?")) { await signOut(auth); location.href="auth.html"; }
+        });
+    </script>
+</body>
+</html>

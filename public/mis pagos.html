@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Pagos - El Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                colors: { clubVerde:'#084739', clubVerdeMedio:'#0f5445', clubCrema:'#eadac8', clubOscuro:'#1a1a1a', clubFondoCard:'#121212' },
+                fontFamily: { sans:['Plus Jakarta Sans','sans-serif'], serif:['Playfair Display','serif'] }
+            }}
+        }
+    </script>
+</head>
+<body class="font-sans bg-clubOscuro text-white min-h-screen md:flex antialiased">
+
+    <aside class="w-full md:w-64 bg-clubVerde text-white flex flex-col justify-between p-6 border-r border-white/5 shrink-0">
+        <div>
+            <div class="text-2xl font-serif font-bold text-clubCrema mb-8">El Club</div>
+            <div class="bg-clubVerdeMedio rounded-xl p-4 flex items-center gap-3 border border-white/10 mb-8">
+                <div class="w-11 h-11 bg-clubCrema text-clubVerde rounded-full flex items-center justify-center text-sm font-bold overflow-hidden">
+                    <span id="user-initials">US</span>
+                    <img id="user-photo" class="hidden w-full h-full object-cover rounded-full" src="" alt="">
+                </div>
+                <div>
+                    <h4 id="patient-name" class="text-sm font-bold text-white">Paciente</h4>
+                    <p class="text-[10px] uppercase tracking-wider text-clubCrema/80">Paciente</p>
+                </div>
+            </div>
+            <nav class="space-y-1.5 text-sm font-medium">
+                <a href="dashboard-paciente.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>🏠</span> Inicio</a>
+                <a href="mis-citas.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>📅</span> Mis citas</a>
+                <a href="mis-notas.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>📓</span> Mis notas</a>
+                <a href="perfil-psicologa.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>🔍</span> Buscar psicóloga</a>
+                <a href="mis-pagos.html" class="flex items-center gap-3 bg-clubCrema text-clubVerde px-4 py-3 rounded-xl shadow-md"><span>💳</span> Pagos</a>
+                <a href="mi-perfil-paciente.html" class="flex items-center gap-3 text-clubCrema hover:bg-white/5 px-4 py-3 rounded-xl transition-all"><span>👤</span> Mi perfil</a>
+            </nav>
+        </div>
+        <button id="btn-logout" class="w-full flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-clubCrema/60 hover:text-white px-4 py-3 transition-colors mt-8 pt-4 border-t border-white/10">
+            <span>🚪</span> Cerrar sesión
+        </button>
+    </aside>
+
+    <main class="flex-grow p-6 md:p-10 space-y-8 overflow-y-auto">
+        <header class="border-b border-white/5 pb-6">
+            <h1 class="text-2xl md:text-3xl font-serif font-semibold">Mis Pagos 💳</h1>
+            <p class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Historial de transacciones</p>
+        </header>
+
+        <!-- Resumen -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <div class="bg-clubFondoCard border border-white/5 p-5 rounded-2xl">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total invertido</p>
+                <h3 id="total-pagado" class="text-2xl font-bold font-mono mt-2 text-clubCrema">$0 COP</h3>
+            </div>
+            <div class="bg-clubFondoCard border border-white/5 p-5 rounded-2xl">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Sesiones pagadas</p>
+                <h3 id="total-sesiones" class="text-2xl font-bold font-mono mt-2 text-clubCrema">0</h3>
+            </div>
+            <div class="bg-clubFondoCard border border-white/5 p-5 rounded-2xl">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Último pago</p>
+                <h3 id="ultimo-pago" class="text-lg font-bold mt-2 text-clubCrema">—</h3>
+            </div>
+        </div>
+
+        <!-- Historial -->
+        <div class="bg-clubFondoCard border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-white/5">
+                <h3 class="text-sm font-serif font-semibold text-clubCrema">Historial de pagos</h3>
+            </div>
+            <div id="pagos-container" class="divide-y divide-white/5">
+                <p class="text-gray-500 text-sm italic p-6">Cargando historial...</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { checkAuth, auth, signOut, db, collection, query, where, onSnapshot, getUserProfile } from "./firebase-config.js";
+        import { loadProfilePhoto } from "./profile-photo.js";
+
+        checkAuth("paciente");
+
+        const fmtMoney = v => new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(v);
+        const methodColors = { NEQUI:"text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20", PSE:"text-blue-400 bg-blue-500/10 border-blue-500/20", DAVIPLATA:"text-red-400 bg-red-500/10 border-red-500/20", BREV:"text-green-400 bg-green-500/10 border-green-500/20" };
+
+        auth.onAuthStateChanged(async user => {
+            if (!user) return;
+            const profile = await getUserProfile(user);
+            const name = profile ? `${profile.firstName||""} ${profile.lastName||""}`.trim() : user.email;
+            document.getElementById("patient-name").innerText = name;
+            document.getElementById("user-initials").innerText = name.split(" ").slice(0,2).map(w=>w[0]).join("").toUpperCase() || "US";
+            if (profile?.photoURL) loadProfilePhoto(profile.photoURL, { avatarId:"user-photo", initialsId:"user-initials" });
+
+            const q = query(collection(db,"appointments"), where("patientId","==",user.uid), where("paymentStatus","==","pagado"));
+            onSnapshot(q, snap => {
+                const pagos = snap.docs.map(d=>({id:d.id,...d.data()}))
+                    .sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
+
+                const total = pagos.reduce((s,p)=>s+Number(p.amount||0),0);
+                document.getElementById("total-pagado").innerText = fmtMoney(total);
+                document.getElementById("total-sesiones").innerText = pagos.length;
+                document.getElementById("ultimo-pago").innerText = pagos[0]
+                    ? new Date(pagos[0].createdAt).toLocaleDateString("es-CO",{day:"numeric",month:"short",year:"numeric"})
+                    : "—";
+
+                const container = document.getElementById("pagos-container");
+                if (!pagos.length) {
+                    container.innerHTML = `<p class="text-gray-500 text-sm p-6">No tienes pagos registrados aún.</p>`;
+                    return;
+                }
+
+                container.innerHTML = pagos.map(p => {
+                    const method = (p.paymentMethod||"PAGO").toUpperCase();
+                    const color = methodColors[method] || "text-gray-400 bg-white/5 border-white/10";
+                    return `
+                    <div class="flex justify-between items-center px-6 py-4 hover:bg-white/3 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-md border ${color}">${method}</span>
+                            <div>
+                                <p class="text-sm font-semibold text-white">${p.psychologistName || "Sesión"}</p>
+                                <p class="text-[11px] text-gray-400">${p.date||p.dateISO||"—"} · ${p.time||""}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-bold font-mono text-emerald-400">${fmtMoney(p.amount||0)}</p>
+                            <p class="text-[10px] text-gray-500">${p.createdAt ? new Date(p.createdAt).toLocaleDateString("es-CO") : "—"}</p>
+                        </div>
+                    </div>`;
+                }).join("");
+            });
+        });
+
+        document.getElementById("btn-logout").addEventListener("click", async () => {
+            if (confirm("¿Cerrar sesión?")) { await signOut(auth); location.href="auth.html"; }
+        });
+    </script>
+</body>
+</html>
